@@ -341,7 +341,7 @@ const SCHOOLS = [
 // ─── Map Projection ───────────────────────────────────────────────────────────
 const SVG_W = 800, SVG_H = 600;
 const texasFeature = feature(usAtlas, usAtlas.objects.states).features.find(f => f.id === "48");
-const projection  = geoMercator().fitExtent([[24, 24], [SVG_W - 24, SVG_H - 24]], texasFeature);
+const projection  = geoMercator().fitExtent([[110, 90], [SVG_W - 110, SVG_H - 90]], texasFeature);
 const TX_PATH     = geoPath(projection)(texasFeature);
 const project     = (lng, lat) => { const [x, y] = projection([lng, lat]); return { x, y }; };
 
