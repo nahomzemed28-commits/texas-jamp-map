@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { feature } from "topojson-client";
 import { geoMercator, geoPath } from "d3-geo";
 import usAtlas from "us-atlas/states-10m.json";
@@ -372,16 +372,38 @@ export default function TexasMedMap() {
 
   const handleWheel = useCallback((e) => {
     e.preventDefault();
-    const factor = e.deltaY > 0 ? 1.12 : 0.88; // scroll down = zoom out, up = zoom in
+    const svg = mapSvgRef.current;
+    if (!svg) return;
+
+    const factor = e.deltaY > 0 ? 1.15 : 0.87;
+
+    // Convert mouse position to SVG coordinates so zoom is cursor-centered
+    const rect = svg.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
     setVb(prev => {
-      const newW = Math.min(SVG_W * 3, Math.max(SVG_W * 0.25, prev.w * factor));
-      const newH = Math.min(SVG_H * 3, Math.max(SVG_H * 0.25, prev.h * factor));
-      // Zoom toward SVG center
-      const cx = prev.x + prev.w / 2;
-      const cy = prev.y + prev.h / 2;
-      return { x: cx - newW / 2, y: cy - newH / 2, w: newW, h: newH };
+      const newW = Math.min(SVG_W * 3, Math.max(SVG_W * 0.2, prev.w * factor));
+      const newH = Math.min(SVG_H * 3, Math.max(SVG_H * 0.2, prev.h * factor));
+      // Map mouse pixel → SVG space, then keep that point fixed
+      const svgX = prev.x + (mx / rect.width)  * prev.w;
+      const svgY = prev.y + (my / rect.height) * prev.h;
+      return {
+        x: svgX - (mx / rect.width)  * newW,
+        y: svgY - (my / rect.height) * newH,
+        w: newW,
+        h: newH,
+      };
     });
   }, []);
+
+  // Attach as non-passive so preventDefault() actually works
+  useEffect(() => {
+    const svg = mapSvgRef.current;
+    if (!svg) return;
+    svg.addEventListener("wheel", handleWheel, { passive: false });
+    return () => svg.removeEventListener("wheel", handleWheel);
+  }, [handleWheel]);
 
   return (
     <div style={{
@@ -427,7 +449,6 @@ export default function TexasMedMap() {
         viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`}
         style={{ width: "100%", height: "100%", display: "block", position: "relative", zIndex: 1 }}
         preserveAspectRatio="xMidYMid meet"
-        onWheel={handleWheel}
       >
         <defs>
           <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
