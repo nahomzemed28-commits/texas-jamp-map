@@ -393,21 +393,36 @@ export default function TexasMedMap() {
             <feGaussianBlur stdDeviation="5" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
-          <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
-            <stop offset="0%"   stopColor="#060d1a" />
-            <stop offset="100%" stopColor="#060d1a" />
+          <radialGradient id="bgGrad" cx="50%" cy="48%" r="62%">
+            <stop offset="0%"   stopColor="#0b1a30" />
+            <stop offset="55%"  stopColor="#07101e" />
+            <stop offset="100%" stopColor="#030810" />
+          </radialGradient>
+          <radialGradient id="moonGlow" cx="50%" cy="48%" r="50%">
+            <stop offset="0%"   stopColor="#1a3a6a" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#1a3a6a" stopOpacity="0" />
           </radialGradient>
         </defs>
 
         {/* Background */}
         <rect width={SVG_W} height={SVG_H} fill="url(#bgGrad)" />
 
-        {/* Subtle dot grid */}
-        {Array.from({ length: 20 }, (_, r) =>
-          Array.from({ length: 30 }, (_, c) => (
-            <circle key={`${r}-${c}`} cx={c * 28 + 14} cy={r * 32 + 16} r="0.8" fill="#1a3a5c" opacity="0.25" />
-          ))
-        )}
+        {/* Ambient moon glow */}
+        <rect width={SVG_W} height={SVG_H} fill="url(#moonGlow)" />
+
+        {/* Star field — sparse, varied sizes */}
+        {[
+          [42,28],[120,55],[198,18],[310,40],[450,22],[560,48],[680,15],[740,72],
+          [55,110],[170,130],[290,95],[430,115],[590,88],[710,140],[780,95],
+          [18,200],[95,185],[250,210],[380,175],[510,195],[650,168],[770,210],
+          [65,310],[210,290],[360,320],[490,300],[620,285],[755,315],
+          [30,420],[155,405],[300,440],[450,415],[600,430],[730,410],
+          [80,500],[230,520],[400,490],[570,510],[700,540],[760,490],
+          [140,568],[350,572],[530,558],[670,575],
+        ].map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r={i % 5 === 0 ? 1.2 : i % 3 === 0 ? 0.9 : 0.6}
+            fill="white" opacity={i % 5 === 0 ? 0.22 : i % 3 === 0 ? 0.14 : 0.09} />
+        ))}
 
         {/* Texas — glow border */}
         <path d={TX_PATH} fill="none" stroke="#1d4ed8" strokeWidth="4" filter="url(#txGlow)" opacity="0.5" />
@@ -417,11 +432,6 @@ export default function TexasMedMap() {
         <path d={TX_PATH} fill="none" stroke="#2563eb" strokeWidth="1.2" opacity="0.7" />
         {/* Texas — inner highlight top */}
         <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-
-        {/* Watermark */}
-        <text x="390" y="340" textAnchor="middle" fontSize="90" fontWeight="900"
-          fill="none" stroke="#0d2040" strokeWidth="1.5" letterSpacing="22"
-          style={{ userSelect: "none", pointerEvents: "none" }}>TEXAS</text>
 
         {/* Gulf label */}
         <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#0f2e4a"
