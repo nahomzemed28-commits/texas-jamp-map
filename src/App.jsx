@@ -1,36 +1,18 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import { feature } from "topojson-client";
 import { geoMercator, geoPath } from "d3-geo";
 import usAtlas from "us-atlas/states-10m.json";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import {
-  Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { NumberTicker } from "@/components/ui/number-ticker";
-import { BorderBeam } from "@/components/ui/border-beam";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
-import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
-import { CosmicParallaxBg } from "@/components/ui/parallax-cosmic-background";
-import {
-  ChevronLeft, Phone, BarChart3, BookOpen, Star, FlaskConical,
-  GraduationCap, Lightbulb, MapPin, X, Users, Mail,
-  Bookmark, Info, ArrowUpDown, Scale,
-} from "lucide-react";
-import { Grainient } from "@/components/ui/grainient";
-import { BorderGlow } from "@/components/ui/border-glow";
+import { X, Phone, Mail, MapPin, FlaskConical, BookOpen, BarChart3, GraduationCap } from "lucide-react";
 
-// ─── Tier Config ─────────────────────────────────────────────────────────────
+// ─── Tier Config ──────────────────────────────────────────────────────────────
 const TIER = {
-  1: { color: "#F59E0B", bg: "rgba(245,158,11,0.12)", border: "rgba(245,158,11,0.35)", label: "Nationally Prominent" },
-  2: { color: "#3B82F6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.35)",  label: "Well-Established" },
-  3: { color: "#10B981", bg: "rgba(16,185,129,0.12)",  border: "rgba(16,185,129,0.35)",  label: "Established" },
-  4: { color: "#A855F7", bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.35)",  label: "Emerging / Newer" },
+  1: { color: "#F59E0B", glow: "rgba(245,158,11,0.4)",  label: "Nationally Prominent" },
+  2: { color: "#3B82F6", glow: "rgba(59,130,246,0.4)",  label: "Well-Established" },
+  3: { color: "#10B981", glow: "rgba(16,185,129,0.4)",  label: "Established" },
+  4: { color: "#A855F7", glow: "rgba(168,85,247,0.4)",  label: "Emerging / Newer" },
 };
 
-// ─── School Data ─────────────────────────────────────────────────────────────
+// ─── School Data ──────────────────────────────────────────────────────────────
 const SCHOOLS = [
   {
     id: 1, name: "Baylor College of Medicine", shortName: "BCM",
@@ -139,7 +121,7 @@ const SCHOOLS = [
       "Interprofessional education (nursing, allied health)",
     ],
     nih: { rank: "Not ranked", funding: "Not publicly available" },
-    notes: "100% COMLEX Level 1 first-time pass rate (Class of 2026) · 10-year COCA accreditation (highest level) · First new state-funded public DO school in US since 1977 · 99% residency placement",
+    notes: "100% COMLEX Level 1 first-time pass rate (Class of 2026) · 10-year COCA accreditation · First new state-funded public DO school in US since 1977 · 99% residency placement",
     duals: ["DO/MPH (concurrent, 4–5 years online)"],
   },
   {
@@ -161,7 +143,7 @@ const SCHOOLS = [
       "Baylor Scott & White Health & CHI St. Joseph affiliations",
     ],
     nih: { rank: "Not in top 100", funding: "Not publicly isolated" },
-    notes: "Renamed Aug 9, 2025 (Naresh K. Vashisht gift, approved Nov 2024) · Unique C2M ROTC-to-medicine track · Aggie early assurance (A2M) · 84.5% TX residents",
+    notes: "Renamed Aug 9, 2025 (Naresh K. Vashisht gift) · Unique C2M ROTC-to-medicine track · Aggie early assurance (A2M) · 84.5% TX residents",
     duals: ["MD/PhD", "MD/MS (various disciplines)", "MD/MEd", "MD/ME (Engineering)"],
   },
   {
@@ -174,7 +156,7 @@ const SCHOOLS = [
     curriculum: {
       structure: "Integrated; clinical presentations from Year 1",
       preclinical: "18 months",
-      step1: "Required by July of MS2; must pass before entering clerkships (MS3)",
+      step1: "Required by July of MS2; must pass before entering clerkships",
     },
     specialties: [
       "US-Mexico border health & cross-border medicine",
@@ -182,8 +164,8 @@ const SCHOOLS = [
       "Primary care (~50% of graduates)",
       "Bilingual clinical training (Spanish-speaking patient population)",
     ],
-    nih: { rank: "Not ranked", funding: "Limited (renamed in 2009 after Paul Foster's $50M gift)" },
-    notes: "Only allopathic school on US-Mexico border · Hispanic Serving Institution (HSI) · Univ Medical Center El Paso affiliation · Up to 10% OOS allowed",
+    nih: { rank: "Not ranked", funding: "Limited (renamed 2009 after Paul Foster's $50M gift)" },
+    notes: "Only allopathic school on US-Mexico border · Hispanic Serving Institution (HSI) · Univ Medical Center El Paso · Up to 10% OOS allowed",
     duals: ["MD/MPH (collaborative with UTHealth Houston SPH, within 4 years)"],
   },
   {
@@ -238,7 +220,7 @@ const SCHOOLS = [
     admissions: { mcat: "507", gpa: "3.77", classSize: "231", acceptRate: "~35% of interviewed" },
     grading: { preclinical: "Pass / Fail", clinical: "H / P / F" },
     curriculum: {
-      structure: "Modified integrated systems; Year 2 is 100+ patient-presentation based (~1,000 diseases)",
+      structure: "Modified integrated systems; Year 2 is patient-presentation based (~1,000 diseases)",
       preclinical: "2 years",
       step1: "COMLEX Level 1 after Year 2 (USMLE Step 1 optional)",
     },
@@ -337,761 +319,494 @@ const SCHOOLS = [
       "CHRISTUS Health affiliation (primary care focus)",
     ],
     nih: { rank: "Not ranked", funding: "Via UT Health Science Center programs" },
-    notes: "Newest TX school (opened July 2023) · Smallest class in TX (40) · 95% TX residents · JAMP phased implementation: providing mentoring now, guaranteed admission begins 2026–2027 · ⚠️ JAMP coordinator email not confirmed — contact by phone",
+    notes: "Newest TX school (opened July 2023) · Smallest class in TX (40) · 95% TX residents · JAMP phased implementation: guaranteed admission begins 2026–2027 · ⚠️ JAMP coordinator email not confirmed — contact by phone",
     duals: ["MS in Biotechnology (concurrent)", "11 residency programs, 8 fellowships/internships"],
   },
 ];
 
-// ─── SVG Projection ───────────────────────────────────────────────────────────
+// ─── Map Projection ───────────────────────────────────────────────────────────
 const SVG_W = 800, SVG_H = 600;
+const texasFeature = feature(usAtlas, usAtlas.objects.states).features.find(f => f.id === "48");
+const projection  = geoMercator().fitExtent([[24, 24], [SVG_W - 24, SVG_H - 24]], texasFeature);
+const TX_PATH     = geoPath(projection)(texasFeature);
+const project     = (lng, lat) => { const [x, y] = projection([lng, lat]); return { x, y }; };
 
-const texasFeature = feature(usAtlas, usAtlas.objects.states).features.find(
-  f => f.id === "48"
-);
 
-const projection = geoMercator().fitExtent(
-  [[20, 20], [SVG_W - 20, SVG_H - 20]],
-  texasFeature
-);
-
-const TX_PATH = geoPath(projection)(texasFeature);
-
-const project = (lng, lat) => {
-  const [x, y] = projection([lng, lat]);
-  return { x, y };
-};
-
-// ─── Root App ─────────────────────────────────────────────────────────────────
+// ─── Root ─────────────────────────────────────────────────────────────────────
 export default function TexasMedMap() {
-  const [splash, setSplash]         = useState(true);
-  const [selected, setSelected]     = useState(null);
-  const [hovered, setHovered]       = useState(null);
-  const [search, setSearch]         = useState("");
+  const [selected,   setSelected]   = useState(null);
+  const [hovered,    setHovered]    = useState(null);
+  const [hoverPos,   setHoverPos]   = useState({ x: 0, y: 0 });
+  const [activeTab,  setActiveTab]  = useState("overview");
   const [tierFilter, setTierFilter] = useState(0);
-  const [degreeFilter, setDegreeFilter] = useState("all");
-  const [sortBy, setSortBy]         = useState("tier");
-  const [mobileView, setMobileView] = useState("map");
-  const [showJampInfo, setShowJampInfo] = useState(false);
-  const [compareList, setCompareList] = useState([]);
-  const [showCompare, setShowCompare] = useState(false);
-  const [favorites, setFavorites]   = useState(() => {
-    try { return JSON.parse(localStorage.getItem("jamp-favs") || "[]"); }
-    catch { return []; }
-  });
-  const [showFavOnly, setShowFavOnly] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => setSplash(false), 1800);
-    return () => clearTimeout(t);
-  }, []);
+  const visible = tierFilter === 0 ? SCHOOLS : SCHOOLS.filter(s => s.tier === tierFilter);
 
-  const handleSelect = (school) => {
-    setSelected(prev => prev?.id === school.id ? null : school);
-    setShowCompare(false);
-    setMobileView("detail");
-  };
-  const handleClose = () => {
-    setSelected(null);
-    setMobileView("list");
-  };
+  function handleSelect(school) {
+    setSelected(school);
+    setActiveTab("overview");
+    setHovered(null);
+  }
 
-  const toggleFavorite = (id) => {
-    setFavorites(prev => {
-      const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
-      try { localStorage.setItem("jamp-favs", JSON.stringify(next)); } catch {}
-      return next;
-    });
-  };
-
-  const toggleCompare = (id) => {
-    setCompareList(prev => {
-      if (prev.includes(id)) return prev.filter(x => x !== id);
-      if (prev.length >= 3) return [...prev.slice(1), id];
-      return [...prev, id];
-    });
-  };
-
-  const filteredSchools = useMemo(() => {
-    const q = search.toLowerCase();
-    let result = SCHOOLS.filter(s => {
-      const matchSearch = !q ||
-        s.name.toLowerCase().includes(q) ||
-        s.shortName.toLowerCase().includes(q) ||
-        s.location.toLowerCase().includes(q);
-      const matchTier   = tierFilter === 0 || s.tier === tierFilter;
-      const matchDegree = degreeFilter === "all" || s.degree === degreeFilter;
-      const matchFav    = !showFavOnly || favorites.includes(s.id);
-      return matchSearch && matchTier && matchDegree && matchFav;
-    });
-
-    if (sortBy === "mcat") {
-      result = [...result].sort((a, b) => parseFloat(b.admissions.mcat) - parseFloat(a.admissions.mcat));
-    } else if (sortBy === "gpa") {
-      result = [...result].sort((a, b) => parseFloat(b.admissions.gpa) - parseFloat(a.admissions.gpa));
-    } else if (sortBy === "size") {
-      result = [...result].sort((a, b) => parseInt(a.admissions.classSize) - parseInt(b.admissions.classSize));
-    } else {
-      result = [...result].sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name));
-    }
-    return result;
-  }, [search, tierFilter, degreeFilter, sortBy, showFavOnly, favorites]);
-
-  const compareSchools = useMemo(
-    () => compareList.map(id => SCHOOLS.find(s => s.id === id)).filter(Boolean),
-    [compareList]
-  );
-
-  const hasFilters = search || tierFilter !== 0 || degreeFilter !== "all" || showFavOnly;
-
-  const rightPanel = showCompare && compareList.length >= 2
-    ? "compare"
-    : selected
-      ? "detail"
-      : "list";
+  function handlePinEnter(school, e) {
+    setHovered(school);
+    setHoverPos({ x: e.clientX, y: e.clientY });
+  }
 
   return (
-    <TooltipProvider delayDuration={200}>
-      <div className="dark flex flex-col h-dvh bg-[#06080e] text-[#E6EDF3] overflow-hidden font-sans relative">
+    <div style={{ position: "fixed", inset: 0, background: "#050912", fontFamily: "'Geist Variable', system-ui, sans-serif", overflow: "hidden" }}>
 
-        {/* ── WebGL background ── */}
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <Grainient
-            color1="#1e3a6e" color2="#0f1e42" color3="#030712"
-            timeSpeed={0.08} warpStrength={1.2} warpFrequency={4.0}
-            warpSpeed={1.4} warpAmplitude={55} grainAmount={0.055}
-            grainScale={2.5} grainAnimated={false} contrast={1.4}
-            saturation={1.3} gamma={1.0} zoom={0.88} blendAngle={30}
-            blendSoftness={0.18} rotationAmount={280} noiseScale={2.2}
-            colorBalance={0.04}
-          />
-        </div>
+      {/* ── Full-Screen Map ── */}
+      <svg
+        viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+        style={{ width: "100%", height: "100%", display: "block" }}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <defs>
+          <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
+            <stop offset="0%"   stopColor="#0f2340" />
+            <stop offset="100%" stopColor="#07111f" />
+          </radialGradient>
+          <filter id="txGlow" x="-8%" y="-8%" width="116%" height="116%">
+            <feGaussianBlur stdDeviation="4" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="pinGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="pinGlowSel" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="5" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+            <stop offset="0%"   stopColor="#07101e" />
+            <stop offset="100%" stopColor="#030710" />
+          </radialGradient>
+        </defs>
 
-        {/* ── Splash ── */}
-        {splash && (
-          <div className="cosmic-splash">
-            <CosmicParallaxBg
-              head="JAMP"
-              text="Texas Medical Schools, 14 Programs, Your Future"
-              loop={false}
-            />
-          </div>
+        {/* Background */}
+        <rect width={SVG_W} height={SVG_H} fill="url(#bgGrad)" />
+
+        {/* Subtle dot grid */}
+        {Array.from({ length: 20 }, (_, r) =>
+          Array.from({ length: 30 }, (_, c) => (
+            <circle key={`${r}-${c}`} cx={c * 28 + 14} cy={r * 32 + 16} r="0.8" fill="#1a3a5c" opacity="0.25" />
+          ))
         )}
 
-        {/* ── JAMP Eligibility Popover ── */}
-        {showJampInfo && (
-          <div
-            className="absolute top-14 right-4 z-50 w-72 rounded-xl shadow-2xl"
-            style={{ background: "rgba(10,14,28,0.97)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
-          >
-            <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-              <h3 className="text-[13px] font-bold text-[#E6EDF3]">JAMP Eligibility</h3>
-              <button onClick={() => setShowJampInfo(false)} className="text-[#6E7681] hover:text-[#E6EDF3] transition-colors cursor-pointer">
-                <X size={14} />
-              </button>
-            </div>
-            <div className="px-4 py-3 space-y-3">
-              {[
-                { label: "Residency", value: "Texas resident · US citizen or permanent resident" },
-                { label: "Financial Need", value: "Pell-eligible (SAI −1,500 to 7,000)" },
-                { label: "Academic", value: "3.40+ overall GPA · 3.25+ BCPM GPA" },
-                { label: "Application Window", value: "Opens May 1 · Closes October 1" },
-              ].map(({ label, value }) => (
-                <div key={label}>
-                  <p className="text-[10px] text-[#6E7681] uppercase tracking-wider font-semibold mb-0.5">{label}</p>
-                  <p className="text-[12px] text-[#E6EDF3] leading-relaxed">{value}</p>
-                </div>
-              ))}
-              <div className="pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                <p className="text-[11px] text-[#6E7681] leading-relaxed">
-                  2025 cohort: 150 scholars from 364 applications (25% YoY increase)
-                </p>
-                <a
-                  href="https://texasjamp.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] text-[#3B82F6] hover:underline mt-1 block"
-                >
-                  texasjamp.org →
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Texas — glow border */}
+        <path d={TX_PATH} fill="none" stroke="#1d4ed8" strokeWidth="4" filter="url(#txGlow)" opacity="0.5" />
+        {/* Texas — fill */}
+        <path d={TX_PATH} fill="url(#txFill)" />
+        {/* Texas — crisp edge */}
+        <path d={TX_PATH} fill="none" stroke="#2563eb" strokeWidth="1.2" opacity="0.7" />
+        {/* Texas — inner highlight top */}
+        <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
 
-        {/* ── Header ── */}
-        <header
-          className="flex items-center justify-between gap-4 px-5 py-3 border-b border-white/[0.07] shrink-0 relative overflow-hidden z-10"
-          style={{ background: "linear-gradient(135deg, rgba(10,14,28,0.92) 0%, rgba(15,20,36,0.88) 100%)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
-        >
-          {/* Top accent line */}
-          <div className="absolute top-0 inset-x-0 h-px pointer-events-none"
-            style={{ background: "linear-gradient(90deg, transparent 0%, #3B82F6 35%, #A855F7 65%, transparent 100%)" }} />
+        {/* Watermark */}
+        <text x="390" y="340" textAnchor="middle" fontSize="90" fontWeight="900"
+          fill="none" stroke="#0d2040" strokeWidth="1.5" letterSpacing="22"
+          style={{ userSelect: "none", pointerEvents: "none" }}>TEXAS</text>
 
-          {/* Logo + title */}
-          <div className="flex items-center gap-3 min-w-0">
-            <div
-              className="flex items-center justify-center w-9 h-9 rounded-xl shrink-0 font-black text-[13px] text-white select-none"
-              style={{ background: "linear-gradient(135deg, #1D4ED8 0%, #7C3AED 100%)", boxShadow: "0 0 18px rgba(59,130,246,0.30), 0 2px 6px rgba(0,0,0,0.5)" }}
+        {/* Gulf label */}
+        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#0f2e4a"
+          fontStyle="italic" letterSpacing="1.5" style={{ userSelect: "none", pointerEvents: "none" }}>
+          Gulf of Mexico
+        </text>
+
+        {/* ── Markers ── */}
+        {SCHOOLS.map(school => {
+          const pos   = project(school.lng, school.lat);
+          const cx    = pos.x + (school.dx || 0);
+          const cy    = pos.y + (school.dy || 0);
+          const isSel = selected?.id === school.id;
+          const isHov = hovered?.id  === school.id;
+          const isVis = visible.some(s => s.id === school.id);
+          const cfg   = TIER[school.tier];
+          const r     = isSel ? 10 : isHov ? 9 : 7;
+
+          return (
+            <g
+              key={school.id}
+              onClick={() => handleSelect(school)}
+              onMouseEnter={e => handlePinEnter(school, e)}
+              onMouseLeave={() => setHovered(null)}
+              style={{ cursor: "pointer", opacity: isVis ? 1 : 0.08, transition: "opacity 0.25s" }}
             >
-              Rx
+              {/* Outer glow ring */}
+              <circle cx={cx} cy={cy} r={r + 5} fill={cfg.color} opacity={isSel || isHov ? 0.2 : 0.1} filter="url(#pinGlow)" />
+
+              {/* Pulse ring when selected */}
+              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill={cfg.color} opacity={0.15} />}
+
+              {/* DO dashed outer ring */}
+              {school.degree === "DO" && (
+                <circle cx={cx} cy={cy} r={r + 5} fill="none"
+                  stroke={cfg.color} strokeWidth="1.2" strokeDasharray="3 2" opacity={0.6} />
+              )}
+
+              {/* Main dot */}
+              <circle cx={cx} cy={cy} r={r} fill={cfg.color}
+                filter={isSel || isHov ? "url(#pinGlowSel)" : undefined}
+                opacity={isSel || isHov ? 1 : 0.9} />
+
+              {/* White center */}
+              <circle cx={cx} cy={cy} r={r * 0.38} fill="white" opacity={0.95} />
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* ── Floating Header ── */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0,
+        padding: "22px 28px 56px",
+        background: "linear-gradient(to bottom, rgba(5,9,18,0.98) 30%, transparent)",
+        display: "flex", alignItems: "flex-start", justifyContent: "space-between",
+        pointerEvents: "none", zIndex: 10,
+      }}>
+        {/* Brand */}
+        <div style={{ pointerEvents: "auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 5 }}>
+            <div style={{
+              width: 34, height: 34, borderRadius: 9,
+              background: "linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 0 18px rgba(99,102,241,0.45)",
+            }}>
+              <span style={{ color: "white", fontSize: 15, fontWeight: 900, letterSpacing: "-0.5px" }}>J</span>
             </div>
             <div>
-              <h1 className="m-0 text-[16px] font-bold leading-tight">
-                <AnimatedGradientText className="text-[16px] font-bold bg-transparent shadow-none px-0 py-0 backdrop-blur-none rounded-none dark:bg-transparent">
-                  Texas JAMP Medical Schools
-                </AnimatedGradientText>
-              </h1>
-              <p className="mt-0.5 text-[11px] text-[#6E7681]">14 programs · click a marker to explore</p>
-            </div>
-          </div>
-
-          {/* Tier legend — display only on desktop */}
-          <div className="hidden lg:flex gap-3 items-center flex-wrap">
-            {Object.entries(TIER).map(([t, cfg]) => (
-              <div key={t} className="flex items-center gap-1.5 text-[10px]">
-                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: cfg.color }} />
-                <span style={{ color: "#8B949E" }}>T{t} — {cfg.label}</span>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
+                <span style={{ fontSize: 17, fontWeight: 800, color: "#e2edf8", letterSpacing: "-0.02em" }}>JAMP</span>
+                <span style={{ fontSize: 17, fontWeight: 300, color: "#3d6a91", letterSpacing: "-0.01em" }}>Medical Schools</span>
               </div>
-            ))}
-          </div>
-
-          {/* Right actions */}
-          <div className="flex items-center gap-2 shrink-0">
-            {compareList.length >= 2 && (
-              <button
-                onClick={() => { setShowCompare(v => !v); setSelected(null); setMobileView("list"); }}
-                className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-md border transition-all cursor-pointer"
-                style={showCompare
-                  ? { background: "rgba(59,130,246,0.2)", borderColor: "#3B82F6", color: "#3B82F6" }
-                  : { background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)", color: "#8B949E" }
-                }
-              >
-                <Scale size={13} strokeWidth={2} />
-                Compare ({compareList.length})
-              </button>
-            )}
-            <button
-              onClick={() => setShowJampInfo(v => !v)}
-              className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-md border transition-all cursor-pointer"
-              style={showJampInfo
-                ? { background: "rgba(168,85,247,0.2)", borderColor: "#A855F7", color: "#A855F7" }
-                : { background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)", color: "#8B949E" }
-              }
-            >
-              <Info size={13} strokeWidth={2} />
-              <span className="hidden sm:inline">JAMP Info</span>
-            </button>
-          </div>
-        </header>
-
-        {/* ── Body ── */}
-        <div className="flex flex-1 overflow-hidden relative z-10 md:pb-0 pb-14">
-
-          {/* ── Map Panel ── */}
-          <div
-            className={cn(
-              "flex-1 relative overflow-hidden",
-              mobileView !== "map" ? "hidden md:flex md:flex-col" : "flex flex-col"
-            )}
-            style={{ background: "#c8d8e8" }}
-          >
-            <svg
-              viewBox="0 0 800 600"
-              className="w-full h-full block"
-              preserveAspectRatio="xMidYMid meet"
-            >
-              <defs>
-                <linearGradient id="texasFill" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%"   stopColor="#e8f2fc" />
-                  <stop offset="100%" stopColor="#d4e7f7" />
-                </linearGradient>
-                <filter id="pinShadow">
-                  <feDropShadow dx="1" dy="2" stdDeviation="2" floodColor="rgba(0,30,60,0.35)" />
-                </filter>
-                <filter id="pinShadowSel">
-                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(0,30,60,0.5)" />
-                </filter>
-              </defs>
-
-              {/* Water / surrounding area */}
-              <rect x="0" y="0" width="800" height="600" fill="#c8d8e8" />
-
-              {/* Texas silhouette */}
-              <path d={TX_PATH} fill="url(#texasFill)" stroke="#4a8ec2" strokeWidth="2" strokeLinejoin="round" />
-              {/* Subtle top-highlight inner stroke */}
-              <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1" strokeLinejoin="round" />
-
-              {/* Geographic labels */}
-              <text x="655" y="525" fontSize="12" fill="#8aafc8" fontStyle="italic" textAnchor="middle" letterSpacing="1">Gulf of Mexico</text>
-              <text x="390" y="300" fontSize="52" fill="#d0e3f0" fontWeight="900" textAnchor="middle" letterSpacing="10" opacity="0.9">TEXAS</text>
-
-              {/* ── School Pins ── */}
-              {SCHOOLS.map(school => {
-                const pos = project(school.lng, school.lat);
-                const cx  = pos.x + (school.dx || 0);
-                const cy  = pos.y + (school.dy || 0);
-
-                const isSel      = selected?.id === school.id;
-                const isHov      = hovered?.id  === school.id;
-                const isFiltered = filteredSchools.some(s => s.id === school.id);
-                const cfg = TIER[school.tier];
-
-                // Pin dimensions — scale up on hover/select
-                const R  = isSel ? 11 : isHov ? 10 : 8;   // head radius
-                const H  = isSel ? 28 : isHov ? 25 : 20;  // total pin height (tip → head center)
-
-                // The pin tip is at (cx, cy). Head center is at (cx, cy - H).
-                const headCy = cy - H;
-
-                // Teardrop path: tip at origin, head at (0, -H), radius R
-                const pinPath = [
-                  `M ${cx},${cy}`,
-                  `C ${cx - R * 0.55},${cy - H * 0.35} ${cx - R},${cy - H * 0.65} ${cx - R},${headCy}`,
-                  `A ${R},${R} 0 1,1 ${cx + R},${headCy}`,
-                  `C ${cx + R},${cy - H * 0.65} ${cx + R * 0.55},${cy - H * 0.35} ${cx},${cy}`,
-                  "Z",
-                ].join(" ");
-
-                // Label pill dimensions
-                const labelText  = school.shortName;
-                const labelW     = labelText.length * 6.8 + 14;
-                const labelX     = cx - labelW / 2;
-                const labelY     = cy + 5;  // sits just below the pin tip
-
-                return (
-                  <Tooltip key={school.id}>
-                    <TooltipTrigger asChild>
-                      <g
-                        tabIndex={0}
-                        role="button"
-                        aria-label={school.name}
-                        aria-pressed={isSel}
-                        style={{ cursor: "pointer", opacity: isFiltered ? 1 : 0.18 }}
-                        onClick={() => handleSelect(school)}
-                        onKeyDown={e => (e.key === "Enter" || e.key === " ") && handleSelect(school)}
-                        onMouseEnter={() => setHovered(school)}
-                        onMouseLeave={() => setHovered(null)}
-                        onFocus={() => setHovered(school)}
-                        onBlur={() => setHovered(null)}
-                      >
-                        {/* Selected pulse ring at ground point */}
-                        {isSel && (
-                          <circle className="pulse-ring" cx={cx} cy={cy} r={14} fill={cfg.color} opacity={0.35} />
-                        )}
-
-                        {/* Pin body */}
-                        <path
-                          d={pinPath}
-                          fill={cfg.color}
-                          filter={isSel ? "url(#pinShadowSel)" : "url(#pinShadow)"}
-                        />
-
-                        {/* DO schools: dashed ring around pin head */}
-                        {school.degree === "DO" && (
-                          <circle
-                            cx={cx} cy={headCy} r={R + 4}
-                            fill="none"
-                            stroke={cfg.color}
-                            strokeWidth="1.5"
-                            strokeDasharray="3 2"
-                            opacity={0.7}
-                          />
-                        )}
-
-                        {/* White inner circle on pin head */}
-                        <circle cx={cx} cy={headCy} r={R * 0.42} fill="white" opacity={0.9} />
-
-                        {/* Ground shadow ellipse */}
-                        <ellipse cx={cx} cy={cy + 1} rx={4} ry={2} fill="rgba(0,30,60,0.2)" />
-
-                        {/* Label pill — below pin tip */}
-                        <g style={{ pointerEvents: "none" }}>
-                          <rect
-                            x={labelX} y={labelY}
-                            width={labelW} height={15}
-                            rx={4}
-                            fill="white"
-                            opacity={0.92}
-                            stroke={cfg.color}
-                            strokeWidth={isSel ? 1.2 : 0.6}
-                          />
-                          <text
-                            x={cx} y={labelY + 10.5}
-                            textAnchor="middle"
-                            fontSize="8.5"
-                            fontWeight="800"
-                            fill={cfg.color}
-                            letterSpacing="0.04em"
-                            style={{ pointerEvents: "none" }}
-                          >
-                            {labelText}
-                          </text>
-                        </g>
-                      </g>
-                    </TooltipTrigger>
-
-                    {/* ── Hover Preview Card ── */}
-                    <TooltipContent
-                      side="top"
-                      sideOffset={12}
-                      style={{
-                        background: "white",
-                        border: `2px solid ${cfg.color}`,
-                        borderRadius: "14px",
-                        padding: 0,
-                        overflow: "hidden",
-                        width: "260px",
-                        boxShadow: "0 12px 40px rgba(0,30,80,0.22)",
-                      }}
-                    >
-                      {/* Tier color bar */}
-                      <div style={{ height: "4px", background: cfg.color }} />
-
-                      {/* Card header */}
-                      <div style={{ padding: "12px 14px 10px", background: cfg.bg }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                          <span style={{
-                            fontSize: "10px", fontWeight: 700, color: cfg.color,
-                            textTransform: "uppercase", letterSpacing: "0.06em",
-                          }}>
-                            Tier {school.tier} · {cfg.label}
-                          </span>
-                          <span style={{
-                            marginLeft: "auto", fontSize: "10px", fontWeight: 700,
-                            color: cfg.color, border: `1px solid ${cfg.border}`,
-                            background: "white", borderRadius: "4px", padding: "1px 7px",
-                          }}>
-                            {school.degree}
-                          </span>
-                        </div>
-                        <p style={{ fontSize: "14px", fontWeight: 800, color: "#0f2035", margin: 0, lineHeight: 1.3 }}>
-                          {school.name}
-                        </p>
-                        <p style={{ fontSize: "12px", color: "#5a7a99", margin: "5px 0 0", display: "flex", alignItems: "center", gap: "4px" }}>
-                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5a7a99" strokeWidth="2.5">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                          </svg>
-                          {school.location}
-                        </p>
-                      </div>
-
-                      {/* Stats row */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", borderTop: `1px solid ${cfg.color}22` }}>
-                        {[
-                          { label: "MCAT",       value: school.admissions.mcat,       color: "#d97706", bg: "#fffbeb" },
-                          { label: "GPA",        value: school.admissions.gpa,        color: "#059669", bg: "#f0fdf4" },
-                          { label: "Class Size", value: school.admissions.classSize,  color: "#2563eb", bg: "#eff6ff" },
-                        ].map((s, i) => (
-                          <div key={s.label} style={{
-                            textAlign: "center", padding: "10px 6px",
-                            background: s.bg,
-                            borderRight: i < 2 ? `1px solid ${cfg.color}18` : "none",
-                          }}>
-                            <div style={{ fontSize: "16px", fontWeight: 800, color: s.color }}>{s.value}</div>
-                            <div style={{ fontSize: "10px", color: "#8aa5be", fontWeight: 600, marginTop: "2px" }}>{s.label}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Click hint */}
-                      <div style={{
-                        padding: "8px 14px", fontSize: "11px", color: "#6090b0",
-                        display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "4px",
-                        background: "#f8fbff", borderTop: "1px solid #e2edf6",
-                      }}>
-                        Click pin to explore details →
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
-            </svg>
-          </div>
-
-          {/* ── Side Panel ── */}
-          <div
-            className={cn(
-              "md:w-[420px] w-full border-l border-[#1a3a5c]/60 flex flex-col overflow-hidden md:shrink-0",
-              mobileView === "map" ? "hidden md:flex" : "flex"
-            )}
-            style={{ background: "#07131f", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" }}
-          >
-            {rightPanel === "compare" && (
-              <ComparePanel
-                schools={compareSchools}
-                onClose={() => setShowCompare(false)}
-                onRemove={(id) => {
-                  toggleCompare(id);
-                  if (compareList.length <= 2) setShowCompare(false);
-                }}
-              />
-            )}
-            {rightPanel === "detail" && (
-              <SchoolDetail
-                school={selected}
-                onClose={handleClose}
-                isFav={favorites.includes(selected?.id)}
-                onToggleFav={toggleFavorite}
-                compareList={compareList}
-                onToggleCompare={toggleCompare}
-              />
-            )}
-            {rightPanel === "list" && (
-              <SchoolList
-                schools={filteredSchools}
-                allSchools={SCHOOLS}
-                onSelect={handleSelect}
-                hovered={hovered}
-                selected={selected}
-                search={search}
-                setSearch={setSearch}
-                tierFilter={tierFilter}
-                setTierFilter={setTierFilter}
-                degreeFilter={degreeFilter}
-                setDegreeFilter={setDegreeFilter}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-                favorites={favorites}
-                showFavOnly={showFavOnly}
-                setShowFavOnly={setShowFavOnly}
-                hasFilters={hasFilters}
-                onClearFilters={() => { setSearch(""); setTierFilter(0); setDegreeFilter("all"); setShowFavOnly(false); }}
-              />
-            )}
+              <div style={{ fontSize: 10, color: "#1e4d6a", letterSpacing: "0.12em", marginTop: 1 }}>
+                14 PARTICIPATING INSTITUTIONS · TEXAS
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* ── Mobile Bottom Nav ── */}
-        <div
-          className="flex md:hidden fixed bottom-0 inset-x-0 z-20 border-t border-white/[0.07]"
-          style={{ background: "rgba(8,11,20,0.97)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
-        >
-          {[
-            { id: "map",    label: "Map",     icon: MapPin },
-            { id: "list",   label: "Schools", icon: GraduationCap },
-            { id: "detail", label: "Detail",  icon: BookOpen, disabled: !selected && !showCompare },
-          ].map(({ id, label, icon: Icon, disabled }) => {
-            const isActive = mobileView === id || (id === "detail" && showCompare && mobileView !== "map" && mobileView !== "list");
+        {/* Tier filter pills */}
+        <div style={{ pointerEvents: "auto", display: "flex", gap: 6, alignItems: "center" }}>
+          {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `Tier ${t}`, color: c.color }))].map(item => {
+            const active = tierFilter === item.t;
             return (
-              <button
-                key={id}
-                disabled={!!disabled}
-                onClick={() => {
-                  if (disabled) return;
-                  if (id === "detail" && showCompare) { setMobileView("list"); }
-                  else setMobileView(id);
-                }}
-                className="flex-1 flex flex-col items-center gap-1 py-3 text-[10px] font-semibold transition-all cursor-pointer"
-                style={{ color: isActive ? "#3B82F6" : "#6E7681", opacity: disabled ? 0.35 : 1 }}
-              >
-                <Icon size={18} strokeWidth={2} />
-                {label}
+              <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
+                padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+                cursor: "pointer", border: "none", outline: "none",
+                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,255,255,0.04)",
+                color: active ? (item.color || "#3b82f6") : "#2d5a7a",
+                boxShadow: active ? `0 0 12px ${item.color || "#3b82f6"}33, inset 0 0 0 1px ${item.color || "#3b82f6"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+                backdropFilter: "blur(12px)",
+                transition: "all 0.18s",
+              }}>
+                {item.label}
               </button>
             );
           })}
         </div>
       </div>
-    </TooltipProvider>
-  );
-}
 
-// ─── School Detail Panel ──────────────────────────────────────────────────────
-function SchoolDetail({ school, onClose, isFav, onToggleFav, compareList, onToggleCompare }) {
-  const [tab, setTab] = useState("overview");
-  const cfg = TIER[school.tier];
-  const isCompared = compareList.includes(school.id);
-
-  const tabs = [
-    { id: "overview",   label: "Overview" },
-    { id: "admissions", label: "Admissions" },
-    { id: "academics",  label: "Academics" },
-    { id: "research",   label: "Research" },
-  ];
-
-  return (
-    <div className="flex flex-col h-full overflow-hidden panel-slide">
-      {/* Tier color strip */}
-      <div className="h-[3px] w-full shrink-0"
-        style={{ background: `linear-gradient(90deg, ${cfg.color}00 0%, ${cfg.color} 25%, ${cfg.color} 75%, ${cfg.color}00 100%)` }} />
-
-      {/* Top bar */}
-      <div className="shrink-0 flex items-center gap-2 px-4 py-3 border-b border-[#1a3a5c]/60"
-        style={{ background: "#06111c" }}>
-        <button
-          onClick={onClose}
-          className="flex items-center gap-1 text-[11px] text-[#8B949E] hover:text-[#E6EDF3] transition-colors cursor-pointer shrink-0"
-        >
-          <ChevronLeft size={14} strokeWidth={2.5} /> All Schools
-        </button>
-        <Separator orientation="vertical" className="h-4 bg-[#30363D]" />
-        <div className="flex gap-1.5 flex-wrap flex-1 min-w-0">
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-            style={{ color: cfg.color, background: cfg.bg, border: `1px solid ${cfg.border}` }}>
-            Tier {school.tier} · {cfg.label}
-          </span>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-[#E6EDF3] bg-white/[0.07] border border-white/[0.12]">
-            {school.degree}
-          </span>
-        </div>
-        <div className="flex items-center gap-2.5 shrink-0">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => onToggleCompare(school.id)}
-                className="transition-colors cursor-pointer"
-                style={{ color: isCompared ? "#3B82F6" : "#6E7681" }}
-              >
-                <Scale size={15} strokeWidth={2} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent className="bg-[#1C2333] border-[#30363D] text-[#E6EDF3] text-xs">
-              {isCompared ? "Remove from compare" : "Add to compare"}
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => onToggleFav(school.id)}
-                className="transition-colors cursor-pointer"
-                style={{ color: isFav ? "#F59E0B" : "#6E7681" }}
-              >
-                <Bookmark size={15} strokeWidth={2} fill={isFav ? "#F59E0B" : "none"} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent className="bg-[#1C2333] border-[#30363D] text-[#E6EDF3] text-xs">
-              {isFav ? "Remove from saved" : "Save school"}
-            </TooltipContent>
-          </Tooltip>
-        </div>
-      </div>
-
-      {/* School name */}
-      <div className="px-4 pt-5 pb-4 border-b border-[#1a3a5c]/40 shrink-0">
-        <h2 className="text-[20px] font-bold leading-snug text-white mb-2 tracking-tight">{school.name}</h2>
-        <div className="flex items-center gap-1.5 text-[13px] text-[#7fb3e0]">
-          <MapPin size={13} className="shrink-0" style={{ color: cfg.color }} />
-          <span>{school.location}</span>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="shrink-0 flex border-b border-[#1a3a5c]/60"
-        style={{ background: "#06111c" }}>
-        {tabs.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={cn(
-              "flex-1 py-3 text-[12px] font-semibold transition-all relative cursor-pointer tracking-wide",
-              tab === t.id ? "text-white" : "text-[#4a7fa8] hover:text-[#7fb3e0]"
-            )}
-          >
-            {t.label}
-            {tab === t.id && (
-              <span
-                className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full"
-                style={{ background: cfg.color }}
-              />
-            )}
-          </button>
+      {/* ── Bottom Legend ── */}
+      <div style={{
+        position: "absolute", bottom: 24, left: 28,
+        display: "flex", gap: 14, alignItems: "center",
+        pointerEvents: "none", zIndex: 10,
+      }}>
+        {Object.entries(TIER).map(([t, cfg]) => (
+          <div key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 8px ${cfg.color}88` }} />
+            <span style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
+          </div>
         ))}
+        <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.07)", margin: "0 2px" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #6b7280", opacity: 0.5 }} />
+          <span style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600 }}>DO</span>
+        </div>
       </div>
 
-      {/* Tab content */}
-      <ScrollArea className="flex-1">
-        <div className="pb-8">
-          {tab === "overview"   && <TabOverview   school={school} cfg={cfg} />}
-          {tab === "admissions" && <TabAdmissions school={school} cfg={cfg} />}
-          {tab === "academics"  && <TabAcademics  school={school} cfg={cfg} />}
-          {tab === "research"   && <TabResearch   school={school} cfg={cfg} />}
-        </div>
-      </ScrollArea>
+      {/* ── Hover Preview Card ── */}
+      {hovered && !selected && (
+        <HoverCard school={hovered} pos={hoverPos} />
+      )}
+
+      {/* ── Slide-in Detail Panel ── */}
+      {selected && (
+        <SchoolPanel
+          school={selected}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </div>
   );
 }
 
+// ─── Hover Card ───────────────────────────────────────────────────────────────
+function HoverCard({ school, pos }) {
+  const cfg = TIER[school.tier];
+  const W   = 248;
+  // Keep card on screen
+  const left = Math.min(pos.x + 16, window.innerWidth - W - 16);
+  const top  = Math.max(pos.y - 140, 12);
+
+  return (
+    <div style={{
+      position: "fixed", left, top, width: W,
+      background: "rgba(6, 12, 24, 0.97)",
+      border: `1px solid ${cfg.color}44`,
+      borderRadius: 14, overflow: "hidden",
+      boxShadow: `0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px ${cfg.color}18, 0 0 30px ${cfg.glow}`,
+      pointerEvents: "none", zIndex: 40,
+      animation: "fadeUp 0.12s ease-out",
+    }}>
+      {/* Color bar */}
+      <div style={{ height: 3, background: `linear-gradient(90deg, ${cfg.color}, ${cfg.color}44)` }} />
+
+      {/* Header */}
+      <div style={{ padding: "12px 14px 10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: cfg.color, textTransform: "uppercase", letterSpacing: "0.09em" }}>
+            Tier {school.tier} · {cfg.label}
+          </span>
+          <span style={{
+            marginLeft: "auto", fontSize: 10, fontWeight: 700, color: cfg.color,
+            border: `1px solid ${cfg.color}55`, borderRadius: 5, padding: "1px 7px",
+          }}>{school.degree}</span>
+        </div>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8", margin: "0 0 3px", lineHeight: 1.35 }}>
+          {school.name}
+        </p>
+        <p style={{ fontSize: 11, color: "#2d5a7a", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
+          <MapPin size={10} strokeWidth={2.5} color="#2d5a7a" />
+          {school.location}
+        </p>
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", borderTop: `1px solid rgba(255,255,255,0.05)` }}>
+        {[
+          { label: "MCAT",  value: school.admissions.mcat,      color: "#f59e0b" },
+          { label: "GPA",   value: school.admissions.gpa,       color: "#10b981" },
+          { label: "Class", value: school.admissions.classSize,  color: "#3b82f6" },
+        ].map((s, i) => (
+          <div key={s.label} style={{
+            textAlign: "center", padding: "10px 4px",
+            borderRight: i < 2 ? "1px solid rgba(255,255,255,0.05)" : "none",
+          }}>
+            <div style={{ fontSize: 15, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
+            <div style={{ fontSize: 9, color: "#2d5a7a", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ padding: "7px 14px", fontSize: 10, color: "#1a4060", textAlign: "right", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        Click to explore →
+      </div>
+    </div>
+  );
+}
+
+// ─── School Panel ─────────────────────────────────────────────────────────────
+function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
+  const cfg  = TIER[school.tier];
+  const tabs = [
+    { id: "overview",   label: "Overview",   icon: <MapPin size={13} /> },
+    { id: "admissions", label: "Admissions", icon: <BarChart3 size={13} /> },
+    { id: "academics",  label: "Academics",  icon: <BookOpen size={13} /> },
+    { id: "research",   label: "Research",   icon: <FlaskConical size={13} /> },
+  ];
+
+  return (
+    <div style={{
+      position: "fixed", top: 0, right: 0, bottom: 0, width: 440,
+      background: "rgba(4, 9, 19, 0.98)",
+      backdropFilter: "blur(32px)",
+      borderLeft: `1px solid rgba(255,255,255,0.06)`,
+      display: "flex", flexDirection: "column",
+      zIndex: 50,
+      boxShadow: "-20px 0 80px rgba(0,0,0,0.6)",
+      animation: "slideIn 0.26s cubic-bezier(0.22,1,0.36,1)",
+    }}>
+      {/* Panel header */}
+      <div style={{ padding: "24px 24px 0", flexShrink: 0, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        {/* Top row */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+          <button onClick={onClose} style={{
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", color: "#4d7fa8", transition: "all 0.15s",
+          }}>
+            <X size={15} strokeWidth={2.5} />
+          </button>
+          <span style={{
+            fontSize: 11, fontWeight: 700, color: cfg.color,
+            border: `1px solid ${cfg.color}55`, borderRadius: 6, padding: "3px 10px",
+            letterSpacing: "0.06em",
+          }}>{school.degree}</span>
+        </div>
+
+        {/* Tier badge */}
+        <div style={{ fontSize: 10, fontWeight: 700, color: cfg.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 7 }}>
+          Tier {school.tier} · {cfg.label}
+        </div>
+
+        {/* School name */}
+        <h2 style={{ fontSize: 20, fontWeight: 800, color: "#ddeeff", margin: "0 0 4px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
+          {school.name}
+        </h2>
+        <p style={{ fontSize: 12, color: "#2d5a7a", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
+          <MapPin size={11} strokeWidth={2} color="#2d5a7a" />
+          {school.location}
+        </p>
+
+        {/* Tabs */}
+        <div style={{ display: "flex" }}>
+          {tabs.map(tab => {
+            const active = activeTab === tab.id;
+            return (
+              <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
+                flex: 1, padding: "9px 4px", background: "none", border: "none",
+                borderBottom: active ? `2px solid ${cfg.color}` : "2px solid transparent",
+                cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+                color: active ? cfg.color : "#2d5a7a",
+                fontSize: 11, fontWeight: 600,
+                transition: "all 0.15s",
+              }}>
+                {tab.icon}
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Scrollable content */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+        {activeTab === "overview"   && <TabOverview   school={school} cfg={cfg} />}
+        {activeTab === "admissions" && <TabAdmissions school={school} cfg={cfg} />}
+        {activeTab === "academics"  && <TabAcademics  school={school} cfg={cfg} />}
+        {activeTab === "research"   && <TabResearch   school={school} cfg={cfg} />}
+      </div>
+    </div>
+  );
+}
+
+// ─── Shared sub-components ────────────────────────────────────────────────────
+function Section({ title, children }) {
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <div style={{ fontSize: 10, fontWeight: 700, color: "#1e4d6a", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.05)" }} />
+        {title}
+        <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.05)" }} />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function InfoRow({ label, value, highlight }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+      <span style={{ fontSize: 12, color: "#2d5a7a", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
+      <span style={{ fontSize: 12, color: highlight || "#b0ccdf", fontWeight: 600, textAlign: "right", lineHeight: 1.4 }}>{value}</span>
+    </div>
+  );
+}
+
+function Pill({ children, color }) {
+  return (
+    <span style={{
+      display: "inline-block", padding: "3px 10px", borderRadius: 20,
+      fontSize: 11, fontWeight: 600, background: `${color}18`,
+      color, border: `1px solid ${color}33`, marginRight: 6, marginBottom: 6,
+    }}>{children}</span>
+  );
+}
+
+function ContactCard({ label, value, href, icon }) {
+  return (
+    <a href={href} style={{
+      display: "flex", alignItems: "center", gap: 10, padding: "10px 14px",
+      background: "rgba(255,255,255,0.03)", borderRadius: 10,
+      border: "1px solid rgba(255,255,255,0.06)",
+      textDecoration: "none", marginBottom: 8, transition: "background 0.15s",
+    }}>
+      <div style={{ color: "#3b82f6", flexShrink: 0 }}>{icon}</div>
+      <div>
+        <div style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, marginBottom: 1 }}>{label}</div>
+        <div style={{ fontSize: 12, color: "#7fb3d8", fontWeight: 600 }}>{value}</div>
+      </div>
+    </a>
+  );
+}
+
+// ─── Tabs ─────────────────────────────────────────────────────────────────────
 function TabOverview({ school, cfg }) {
   return (
     <>
-      <Section title="JAMP Contact" icon={Users}>
-        <div className="rounded-xl p-4"
-          style={{ background: "#0d2035", border: "1px solid #1e4a72" }}>
-          <p className="font-bold text-white text-[15px] mb-3">{school.jamp.name}</p>
-          <a href={`tel:${school.jamp.phone}`}
-            className="flex items-center gap-2 text-[13px] font-mono mb-2 hover:underline"
-            style={{ color: "#4da8f5" }}>
-            <Phone size={13} className="shrink-0" />
-            {school.jamp.phone}
-          </a>
-          {school.jamp.email && (
-            <a href={`mailto:${school.jamp.email}`}
-              className="flex items-center gap-2 text-[12px] hover:underline truncate"
-              style={{ color: "#7fb3e0" }}>
-              <Mail size={12} className="shrink-0" />
-              {school.jamp.email}
-            </a>
-          )}
+      <Section title="JAMP Coordinator">
+        <div style={{ padding: "14px", background: "rgba(255,255,255,0.02)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${cfg.color}22`, border: `1px solid ${cfg.color}44`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <GraduationCap size={16} color={cfg.color} />
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8" }}>{school.jamp.name}</div>
+              <div style={{ fontSize: 10, color: "#2d5a7a" }}>JAMP Coordinator</div>
+            </div>
+          </div>
+          <ContactCard label="Phone" value={school.jamp.phone} href={`tel:${school.jamp.phone}`} icon={<Phone size={14} />} />
+          {school.jamp.email
+            ? <ContactCard label="Email" value={school.jamp.email} href={`mailto:${school.jamp.email}`} icon={<Mail size={14} />} />
+            : <div style={{ fontSize: 11, color: "#b45309", padding: "8px 14px", background: "rgba(180,83,9,0.08)", borderRadius: 8, border: "1px solid rgba(180,83,9,0.2)" }}>
+                ⚠️ Email unconfirmed — contact by phone
+              </div>
+          }
         </div>
       </Section>
-      {school.notes && (
-        <Section title="Key Notes" icon={Lightbulb}>
-          <p className="text-[13px] text-[#a8cce8] leading-relaxed">{school.notes}</p>
-        </Section>
-      )}
+
+      <Section title="Key Notes">
+        <p style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
+      </Section>
     </>
   );
 }
 
-function TabAdmissions({ school }) {
-  const parseNum = (val) => parseFloat(String(val).replace(/[^0-9.]/g, ""));
-  const dp = (val) => {
-    const s = String(val).replace(/[^0-9.]/g, "");
-    return s.includes(".") ? s.split(".")[1]?.length ?? 0 : 0;
-  };
+function TabAdmissions({ school, cfg }) {
+  const stats = [
+    { label: "MCAT",        value: school.admissions.mcat,       color: "#f59e0b", sub: "Median" },
+    { label: "GPA",         value: school.admissions.gpa,        color: "#10b981", sub: "Overall" },
+    { label: "Class Size",  value: school.admissions.classSize,  color: "#3b82f6", sub: "Students" },
+    { label: "Accept Rate", value: school.admissions.acceptRate, color: "#a855f7", sub: "of applicants" },
+  ];
 
   return (
     <>
-      <Section title="Admissions Stats" icon={BarChart3}>
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            { label: "Avg MCAT",    value: school.admissions.mcat,       color: "#F59E0B", glow: "45 90 70" },
-            { label: "Avg GPA",     value: school.admissions.gpa,        color: "#10B981", glow: "160 75 60" },
-            { label: "Class Size",  value: school.admissions.classSize,  color: "#3B82F6", glow: "220 85 65" },
-            { label: "Accept Rate", value: school.admissions.acceptRate, color: "#A855F7", glow: "270 80 65" },
-          ].map(s => {
-            const num = parseNum(s.value);
-            const decimals = dp(s.value);
-            return (
-              <BorderGlow
-                key={s.label}
-                backgroundColor="#0a0f1c"
-                glowColor={s.glow}
-                colors={[s.color, s.color + "88", s.color + "44"]}
-                glowIntensity={0.7}
-                borderRadius={10}
-                glowRadius={30}
-                fillOpacity={0.2}
-                className="fade-up"
-              >
-                <div className="p-3 flex flex-col gap-1">
-                  <div className="text-[22px] font-bold leading-none" style={{ color: s.color }}>
-                    {!isNaN(num) && s.label !== "Accept Rate"
-                      ? <NumberTicker value={num} decimalPlaces={decimals} className="text-[22px] font-bold" />
-                      : s.value
-                    }
-                  </div>
-                  <p className="text-[10px] text-[#6E7681] uppercase tracking-wider font-semibold">{s.label}</p>
-                </div>
-              </BorderGlow>
-            );
-          })}
+      <Section title="Admissions Stats">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 4 }}>
+          {stats.map(s => (
+            <div key={s.label} style={{
+              padding: "16px", borderRadius: 12, textAlign: "center",
+              background: `${s.color}0d`, border: `1px solid ${s.color}28`,
+            }}>
+              <div style={{ fontSize: 26, fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: 4 }}>{s.value}</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#d4e8f8", marginBottom: 2 }}>{s.label}</div>
+              <div style={{ fontSize: 10, color: "#2d5a7a" }}>{s.sub}</div>
+            </div>
+          ))}
         </div>
       </Section>
-      <Section title="Grading System" icon={BookOpen}>
-        <div className="flex flex-col gap-1.5">
-          <InfoRow label="Preclinical" value={school.grading.preclinical} />
-          <InfoRow label="Clinical"    value={school.grading.clinical} />
-        </div>
+
+      <Section title="Grading System">
+        <InfoRow label="Preclinical" value={school.grading.preclinical} />
+        <InfoRow label="Clinical"    value={school.grading.clinical} />
       </Section>
     </>
   );
@@ -1100,20 +815,18 @@ function TabAdmissions({ school }) {
 function TabAcademics({ school, cfg }) {
   return (
     <>
-      <Section title="Curriculum" icon={BookOpen}>
-        <div className="flex flex-col gap-1.5">
-          <InfoRow label="Structure"            value={school.curriculum.structure} />
-          <InfoRow label="Preclinical Length"   value={school.curriculum.preclinical} />
-          <InfoRow label="Step 1 / COMLEX"      value={school.curriculum.step1} />
-        </div>
+      <Section title="Curriculum">
+        <InfoRow label="Structure"         value={school.curriculum.structure} />
+        <InfoRow label="Preclinical Phase" value={school.curriculum.preclinical} />
+        <InfoRow label="Step 1 / COMLEX"   value={school.curriculum.step1} />
       </Section>
-      <Section title="Notable Strengths & Specialties" icon={Star}>
-        <div className="flex flex-col gap-2.5">
-          {school.specialties.map((s, i) => (
-            <div key={i} className="flex gap-3 text-[13px] text-[#c5e0f5] leading-relaxed">
-              <span className="w-2 h-2 rounded-full shrink-0 mt-1"
-                style={{ background: cfg.color, boxShadow: `0 0 8px ${cfg.color}` }} />
-              <span>{s}</span>
+
+      <Section title="Notable Specialties">
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {school.specialties.map((sp, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", background: "rgba(255,255,255,0.02)", borderRadius: 9, border: "1px solid rgba(255,255,255,0.05)" }}>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: cfg.color, flexShrink: 0, marginTop: 4, boxShadow: `0 0 6px ${cfg.glow}` }} />
+              <span style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.5 }}>{sp}</span>
             </div>
           ))}
         </div>
@@ -1122,331 +835,23 @@ function TabAcademics({ school, cfg }) {
   );
 }
 
-function TabResearch({ school }) {
+function TabResearch({ school, cfg }) {
   return (
     <>
-      <Section title="NIH Research Funding" icon={FlaskConical}>
-        <div className="rounded-xl p-4 flex flex-col gap-2"
-          style={{ background: "#081d15", border: "1px solid #0f3d28" }}>
-          <InfoRow label="National Rank" value={school.nih.rank} />
-          <InfoRow label="Funding"       value={school.nih.funding} />
+      <Section title="NIH Funding">
+        <div style={{ padding: "16px", borderRadius: 12, background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.18)", marginBottom: 4 }}>
+          <InfoRow label="National Rank" value={school.nih.rank} highlight="#60a5fa" />
+          <InfoRow label="Funding"       value={school.nih.funding} highlight="#60a5fa" />
         </div>
       </Section>
-      <Section title="Dual Degree Programs" icon={GraduationCap}>
-        <div className="flex flex-wrap gap-2">
+
+      <Section title="Dual Degree Programs">
+        <div style={{ paddingTop: 4 }}>
           {school.duals.map((d, i) => (
-            <span key={i} className="text-[12px] text-[#7fb3e0] px-3 py-1.5 rounded-lg"
-              style={{ background: "#0d2035", border: "1px solid #1e4a72" }}>
-              {d}
-            </span>
+            <Pill key={i} color={cfg.color}>{d}</Pill>
           ))}
         </div>
       </Section>
     </>
-  );
-}
-
-// ─── Compare Panel ────────────────────────────────────────────────────────────
-function ComparePanel({ schools, onClose, onRemove }) {
-  const fields = [
-    { label: "MCAT",        get: s => s.admissions.mcat },
-    { label: "GPA",         get: s => s.admissions.gpa },
-    { label: "Accept Rate", get: s => s.admissions.acceptRate },
-    { label: "Class Size",  get: s => s.admissions.classSize },
-    { label: "Degree",      get: s => s.degree },
-    { label: "Preclinical", get: s => s.grading.preclinical },
-    { label: "Step 1",      get: s => s.curriculum.step1.split(";")[0] },
-    { label: "NIH Rank",    get: s => s.nih.rank },
-  ];
-
-  const cols = schools.length;
-
-  return (
-    <div className="flex flex-col h-full overflow-hidden panel-slide">
-      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/[0.07]"
-        style={{ background: "rgba(255,255,255,0.025)" }}>
-        <button onClick={onClose}
-          className="flex items-center gap-1 text-[11px] text-[#8B949E] hover:text-[#E6EDF3] transition-colors cursor-pointer">
-          <ChevronLeft size={14} strokeWidth={2.5} /> Back
-        </button>
-        <Separator orientation="vertical" className="h-4 bg-[#30363D]" />
-        <span className="text-[12px] font-semibold text-[#E6EDF3]">
-          Compare {cols} School{cols !== 1 ? "s" : ""}
-        </span>
-        <span className="text-[11px] text-[#6E7681] ml-1">· pin up to 3</span>
-      </div>
-
-      <ScrollArea className="flex-1">
-        <div className="p-4">
-          {/* School headers */}
-          <div className="grid gap-2 mb-4" style={{ gridTemplateColumns: `100px repeat(${cols}, 1fr)` }}>
-            <div />
-            {schools.map(s => {
-              const cfg = TIER[s.tier];
-              return (
-                <div key={s.id} className="text-center">
-                  <div className="text-[12px] font-bold leading-tight" style={{ color: cfg.color }}>{s.shortName}</div>
-                  <div className="text-[10px] text-[#6E7681] mt-0.5">{s.degree}</div>
-                  <button
-                    onClick={() => onRemove(s.id)}
-                    className="text-[10px] text-[#6E7681] hover:text-red-400 mt-1 transition-colors cursor-pointer"
-                  >✕ remove</button>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Data rows */}
-          {fields.map(({ label, get }) => {
-            const values = schools.map(get);
-            const allSame = values.every(v => v === values[0]);
-            return (
-              <div key={label} className="grid gap-2 py-2.5 border-b border-white/[0.04]"
-                style={{ gridTemplateColumns: `100px repeat(${cols}, 1fr)` }}>
-                <span className="text-[10px] text-[#6E7681] uppercase tracking-wider font-semibold self-center leading-tight">
-                  {label}
-                </span>
-                {values.map((v, i) => (
-                  <span key={i} className="text-[11px] text-center leading-relaxed self-center"
-                    style={{ color: allSame ? "#4B5563" : "#E6EDF3" }}>
-                    {v}
-                  </span>
-                ))}
-              </div>
-            );
-          })}
-
-          {/* JAMP contacts */}
-          <div className="mt-5 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-            <p className="text-[10px] text-[#6E7681] uppercase tracking-wider font-semibold mb-3">JAMP Contact</p>
-            <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
-              {schools.map(s => (
-                <div key={s.id} className="text-center rounded-lg p-2.5"
-                  style={{ background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.2)" }}>
-                  <p className="text-[11px] text-[#E6EDF3] font-semibold leading-tight">{s.jamp.name}</p>
-                  <a href={`tel:${s.jamp.phone}`}
-                    className="text-[10px] text-[#3B82F6] hover:underline block mt-1">
-                    {s.jamp.phone}
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </ScrollArea>
-    </div>
-  );
-}
-
-// ─── School List Panel ────────────────────────────────────────────────────────
-function SchoolList({
-  schools, allSchools, onSelect, hovered, selected,
-  search, setSearch, tierFilter, setTierFilter,
-  degreeFilter, setDegreeFilter, sortBy, setSortBy,
-  favorites, showFavOnly, setShowFavOnly,
-  hasFilters, onClearFilters,
-}) {
-  const isTierSort = sortBy === "tier";
-  const byTier = (tier) => schools.filter(s => s.tier === tier);
-
-  const SORT_OPTIONS = [
-    { value: "tier",  label: "Tier" },
-    { value: "mcat",  label: "MCAT" },
-    { value: "gpa",   label: "GPA" },
-    { value: "size",  label: "Class Size" },
-  ];
-
-  return (
-    <div className="flex flex-col h-full overflow-hidden">
-      {/* Search + filters */}
-      <div className="shrink-0 px-4 pt-4 pb-3 border-b border-[#1a3a5c]/60 space-y-2.5" style={{ background: "#06111c" }}>
-        <Input
-          placeholder="Search schools, location…"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="h-9 text-[13px] focus-visible:ring-[#2e7fd4]"
-          style={{ background: "#0d2035", border: "1px solid #1e4a72", color: "#ddeeff" }}
-        />
-        <div className="flex gap-1.5 flex-wrap items-center">
-          {["all", "MD", "DO"].map(d => (
-            <button
-              key={d}
-              onClick={() => setDegreeFilter(d)}
-              className={cn(
-                "text-[10px] font-semibold px-2.5 py-1 rounded-full border transition-all cursor-pointer",
-                degreeFilter === d
-                  ? "bg-[#3B82F6]/20 border-[#3B82F6] text-[#3B82F6]"
-                  : "bg-transparent border-white/10 text-[#8B949E] hover:border-white/25"
-              )}
-            >{d === "all" ? "All" : d}</button>
-          ))}
-          <div className="w-px bg-white/10 h-4" />
-          {[1,2,3,4].map(t => (
-            <Tooltip key={t}>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={() => setTierFilter(prev => prev === t ? 0 : t)}
-                  className={cn(
-                    "flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full border transition-all cursor-pointer",
-                    tierFilter === t ? "text-white" : "bg-transparent border-white/10 text-[#8B949E] hover:border-white/25"
-                  )}
-                  style={tierFilter === t ? { background: TIER[t].color + "22", borderColor: TIER[t].color, color: TIER[t].color } : {}}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: TIER[t].color }} />
-                  T{t}
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-[#1C2333] border-[#30363D] text-[#E6EDF3] text-xs">
-                {TIER[t].label}
-              </TooltipContent>
-            </Tooltip>
-          ))}
-          <button
-            onClick={() => setShowFavOnly(v => !v)}
-            className={cn(
-              "flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1 rounded-full border transition-all cursor-pointer",
-              showFavOnly
-                ? "bg-[#F59E0B]/20 border-[#F59E0B] text-[#F59E0B]"
-                : "bg-transparent border-white/10 text-[#8B949E] hover:border-white/25"
-            )}
-          >
-            <Bookmark size={10} fill={showFavOnly ? "#F59E0B" : "none"} strokeWidth={2} />
-            {favorites.length > 0 ? `Saved (${favorites.length})` : "Saved"}
-          </button>
-          {hasFilters && (
-            <button
-              onClick={onClearFilters}
-              className="flex items-center gap-1 text-[10px] text-[#8B949E] hover:text-[#E6EDF3] transition-colors ml-auto cursor-pointer"
-            >
-              <X size={10} strokeWidth={2.5} /> Clear
-            </button>
-          )}
-        </div>
-        {/* Sort row */}
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] text-[#6E7681] flex items-center gap-1 shrink-0">
-            <ArrowUpDown size={10} strokeWidth={2} /> Sort:
-          </span>
-          <div className="flex gap-1 flex-wrap">
-            {SORT_OPTIONS.map(opt => (
-              <button
-                key={opt.value}
-                onClick={() => setSortBy(opt.value)}
-                className={cn(
-                  "text-[10px] font-semibold px-2 py-0.5 rounded border transition-all cursor-pointer",
-                  sortBy === opt.value
-                    ? "bg-white/[0.08] border-white/20 text-[#E6EDF3]"
-                    : "border-transparent text-[#6E7681] hover:text-[#8B949E]"
-                )}
-              >{opt.label}</button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Results count */}
-      <div className="shrink-0 px-4 py-2 text-[12px] text-[#4a7fa8] border-b border-[#1a3a5c]/40 flex items-center gap-1">
-        <span>{schools.length} of {allSchools.length} schools</span>
-        {hasFilters && <span className="text-[#2e7fd4] font-semibold">· filtered</span>}
-        <span className="ml-auto text-[#1a3a5c]">DO = dashed ring</span>
-      </div>
-
-      <ScrollArea className="flex-1">
-        <div className="px-3 py-3 space-y-4">
-          {schools.length === 0 && (
-            <div className="text-center py-12 text-[#6E7681] text-[12px]">
-              No schools match your filters.
-            </div>
-          )}
-
-          {isTierSort ? (
-            [1,2,3,4].map(tier => {
-              const group = byTier(tier);
-              if (group.length === 0) return null;
-              return (
-                <div key={tier}>
-                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest mb-2 mt-1"
-                    style={{ color: TIER[tier].color }}>
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: TIER[tier].color }} />
-                    Tier {tier} — {TIER[tier].label}
-                  </div>
-                  <div className="space-y-1">
-                    {group.map(school => <SchoolRow key={school.id} school={school} selected={selected} hovered={null} favorites={favorites} onSelect={onSelect} />)}
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <div className="space-y-1">
-              {schools.map(school => <SchoolRow key={school.id} school={school} selected={selected} hovered={null} favorites={favorites} onSelect={onSelect} />)}
-            </div>
-          )}
-        </div>
-      </ScrollArea>
-    </div>
-  );
-}
-
-function SchoolRow({ school, selected, favorites, onSelect }) {
-  const isSelected = selected?.id === school.id;
-  const isFav = favorites.includes(school.id);
-  const cfg = TIER[school.tier];
-
-  return (
-    <div className="relative rounded-lg" style={{ isolation: "isolate" }}>
-      {isSelected && <GlowingEffect spread={30} glow disabled={false} proximity={60} borderWidth={1.5} color={cfg.color} />}
-      {isSelected && <BorderBeam size={80} duration={5} colorFrom={cfg.color} colorTo={cfg.color + "33"} borderWidth={1} />}
-      <button
-        onClick={() => onSelect(school)}
-        className={cn(
-          "w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-all cursor-pointer overflow-hidden relative",
-          isSelected ? "" : "hover:bg-[#0d2035]"
-        )}
-        style={isSelected
-          ? { background: `${cfg.color}18`, border: `1px solid ${cfg.color}55` }
-          : { border: "1px solid transparent" }
-        }
-      >
-        <span
-          className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-lg transition-opacity"
-          style={{ background: cfg.color, opacity: isSelected ? 1 : 0 }}
-        />
-        <span className="w-2.5 h-2.5 rounded-full shrink-0 ml-1"
-          style={{ background: cfg.color, boxShadow: isSelected ? `0 0 10px ${cfg.color}` : "none" }} />
-        <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-semibold text-white truncate">{school.shortName}</p>
-          <p className="text-[12px] text-[#4a7fa8] truncate">{school.location}</p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          {isFav && <Bookmark size={12} fill="#F59E0B" stroke="#F59E0B" />}
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded"
-            style={{ color: cfg.color, background: `${cfg.color}18`, border: `1px solid ${cfg.color}44` }}>
-            {school.degree}
-          </span>
-        </div>
-      </button>
-    </div>
-  );
-}
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-function Section({ title, icon: Icon, children }) {
-  return (
-    <div className="px-4 py-4 border-b border-white/[0.06]">
-      <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#5b8ab5] uppercase tracking-widest mb-3">
-        {Icon && <Icon size={12} className="shrink-0" />}
-        {title}
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function InfoRow({ label, value }) {
-  return (
-    <div className="flex justify-between gap-4 text-[13px] py-1">
-      <span className="text-[#7fb3e0] shrink-0 font-medium">{label}</span>
-      <span className="text-[#ddeeff] text-right leading-relaxed" style={{ maxWidth: "60%" }}>{value}</span>
-    </div>
   );
 }
