@@ -17,6 +17,7 @@ const SCHOOLS = [
   {
     id: 1, name: "Baylor College of Medicine", shortName: "BCM",
     degree: "MD", tier: 1, location: "Houston, TX",
+    website: "https://www.bcm.edu/education/school-of-medicine",
     lat: 29.7104, lng: -95.3972, dx: -28, dy: -18,
     jamp: { name: "Alexandra Gonzales", phone: "713-798-4842", email: "alexandra.gonzales@bcm.edu" },
     admissions: { mcat: "518.7", gpa: "3.93", classSize: "226", acceptRate: "3.7%" },
@@ -39,6 +40,7 @@ const SCHOOLS = [
   {
     id: 2, name: "Dell Medical School (UT Austin)", shortName: "Dell Med",
     degree: "MD", tier: 2, location: "Austin, TX",
+    website: "https://dellmed.utexas.edu",
     lat: 30.2849, lng: -97.7341, dx: 0, dy: 0,
     jamp: { name: "Liliana Martinez", phone: "512-495-5821", email: "Liliana.martinez@austin.utexas.edu" },
     admissions: { mcat: "517", gpa: "3.85", classSize: "50", acceptRate: "0.88%" },
@@ -61,6 +63,7 @@ const SCHOOLS = [
   {
     id: 3, name: "Long School of Medicine (UT Health SA)", shortName: "Long SOM",
     degree: "MD", tier: 2, location: "San Antonio, TX",
+    website: "https://lsom.uthscsa.edu",
     lat: 29.5091, lng: -98.5672, dx: 0, dy: 0,
     jamp: { name: "Ana Isabel Leos", phone: "210-567-0304", email: "leosa3@uthscsa.edu" },
     admissions: { mcat: "518", gpa: "3.89", classSize: "232", acceptRate: "4.22%" },
@@ -83,6 +86,7 @@ const SCHOOLS = [
   {
     id: 4, name: "McGovern Medical School (UTHealth Houston)", shortName: "McGovern",
     degree: "MD", tier: 2, location: "Houston, TX",
+    website: "https://med.uth.edu",
     lat: 29.7198, lng: -95.4023, dx: 16, dy: 18,
     jamp: { name: "Yolanda Bell", phone: "713-500-5165", email: "yolanda.n.bell@uth.tmc.edu" },
     admissions: { mcat: "513", gpa: "3.90", classSize: "240", acceptRate: "3.93%" },
@@ -105,6 +109,7 @@ const SCHOOLS = [
   {
     id: 5, name: "Sam Houston State University COM", shortName: "SHSU-COM",
     degree: "DO", tier: 4, location: "Conroe, TX",
+    website: "https://www.shsu.edu/colleges/com/",
     lat: 30.3118, lng: -95.4561, dx: -16, dy: -20,
     jamp: { name: "Christopher Truong", phone: "936-202-5208", email: "cat075@shsu.edu" },
     admissions: { mcat: "506", gpa: "3.70", classSize: "110", acceptRate: "Not public" },
@@ -127,6 +132,7 @@ const SCHOOLS = [
   {
     id: 6, name: "Texas A&M Naresh K. Vashisht College of Medicine", shortName: "TAMU Med",
     degree: "MD", tier: 3, location: "Bryan/College Station, TX",
+    website: "https://medicine.tamu.edu",
     lat: 30.6280, lng: -96.3344, dx: 0, dy: 0,
     jamp: { name: "Guillermo Canedo", phone: "979-436-0232", email: "gcanedo@tamu.edu" },
     admissions: { mcat: "513", gpa: "3.86", classSize: "200", acceptRate: "3.29%" },
@@ -149,6 +155,7 @@ const SCHOOLS = [
   {
     id: 7, name: "Paul L. Foster School of Medicine (TTUHSC El Paso)", shortName: "Foster SOM",
     degree: "MD", tier: 3, location: "El Paso, TX",
+    website: "https://ttuhsc.edu/foster-medicine/",
     lat: 31.7619, lng: -106.4850, dx: 0, dy: 0,
     jamp: { name: "Yoli Betancourt", phone: "915-215-4407", email: "Yolanda.Betancourt@ttuhsc.edu" },
     admissions: { mcat: "509", gpa: "3.83", classSize: "124", acceptRate: "2.7%" },
@@ -171,6 +178,7 @@ const SCHOOLS = [
   {
     id: 8, name: "TTUHSC School of Medicine (Lubbock)", shortName: "TTUHSC",
     degree: "MD", tier: 3, location: "Lubbock, TX",
+    website: "https://ttuhsc.edu/medicine/",
     lat: 33.5779, lng: -101.8552, dx: 0, dy: 0,
     jamp: { name: "Louis Perez / Monica Galindo", phone: "806-743-2297", email: null },
     admissions: { mcat: "512", gpa: "3.89", classSize: "182", acceptRate: "3.40%" },
@@ -193,6 +201,7 @@ const SCHOOLS = [
   {
     id: 9, name: "Fertitta Family College of Medicine (UH)", shortName: "UH Med",
     degree: "MD", tier: 4, location: "Houston, TX",
+    website: "https://com.uh.edu",
     lat: 29.7199, lng: -95.3422, dx: 28, dy: -12,
     jamp: { name: "Ashley Schwartz", phone: "713-743-7047", email: "adschwar@central.uh.edu" },
     admissions: { mcat: "509", gpa: "3.68", classSize: "60", acceptRate: "1.25%" },
@@ -215,6 +224,7 @@ const SCHOOLS = [
   {
     id: 10, name: "Texas College of Osteopathic Medicine (TCOM)", shortName: "TCOM",
     degree: "DO", tier: 3, location: "Fort Worth, TX",
+    website: "https://www.unthsc.edu/texas-college-of-osteopathic-medicine/",
     lat: 32.7431, lng: -97.3208, dx: 0, dy: 0,
     jamp: { name: "Lorena Marin", phone: "817-735-2475", email: "Lorena.Marin@unthsc.edu" },
     admissions: { mcat: "507", gpa: "3.77", classSize: "231", acceptRate: "~35% of interviewed" },
@@ -237,6 +247,7 @@ const SCHOOLS = [
   {
     id: 11, name: "Sealy School of Medicine (UTMB Galveston)", shortName: "Sealy/UTMB",
     degree: "MD", tier: 2, location: "Galveston, TX",
+    website: "https://www.utmb.edu/som",
     lat: 29.2903, lng: -94.7977, dx: 0, dy: 0,
     jamp: { name: "LeTanya Neely", phone: "409-772-3763", email: "ldneely@utmb.edu" },
     admissions: { mcat: "513", gpa: "3.84", classSize: "232", acceptRate: "4.22%" },
@@ -259,6 +270,7 @@ const SCHOOLS = [
   {
     id: 12, name: "UT Rio Grande Valley School of Medicine", shortName: "UTRGV Med",
     degree: "MD", tier: 4, location: "Edinburg, TX",
+    website: "https://som.utrgv.edu",
     lat: 26.3017, lng: -98.1633, dx: 0, dy: 0,
     jamp: { name: "Itzely Moreno-Ortiz", phone: "956-296-1600", email: "itzely.ortiz01@utrgv.edu" },
     admissions: { mcat: "507", gpa: "3.74", classSize: "55", acceptRate: "1.15%" },
@@ -281,6 +293,7 @@ const SCHOOLS = [
   {
     id: 13, name: "UT Southwestern Medical Center", shortName: "UTSW",
     degree: "MD", tier: 1, location: "Dallas, TX",
+    website: "https://www.utsouthwestern.edu/education/medical-school/",
     lat: 32.8127, lng: -96.8384, dx: 0, dy: 0,
     jamp: { name: "Jaclyn Young", phone: "214-648-4476", email: "jaclyn.young@utsouthwestern.edu" },
     admissions: { mcat: "516", gpa: "3.89", classSize: "228", acceptRate: "3.96%" },
@@ -303,6 +316,7 @@ const SCHOOLS = [
   {
     id: 14, name: "UT Tyler School of Medicine", shortName: "UT Tyler",
     degree: "MD", tier: 4, location: "Tyler, TX",
+    website: "https://www.uttyler.edu/medicine/",
     lat: 32.3513, lng: -95.3011, dx: 0, dy: 14,
     jamp: { name: "Tonny Williams", phone: "903-877-7566", email: null },
     admissions: { mcat: "505", gpa: "3.75", classSize: "40", acceptRate: "0.80%" },
@@ -354,7 +368,7 @@ export default function TexasMedMap() {
   }
 
   return (
-    <div style={{ position: "fixed", inset: 0, background: "#050912", fontFamily: "'Geist Variable', system-ui, sans-serif", overflow: "hidden" }}>
+    <div style={{ position: "fixed", inset: 0, background: "#060d1a", fontFamily: "'Geist Variable', system-ui, sans-serif", overflow: "hidden" }}>
 
       {/* ── Full-Screen Map ── */}
       <svg
@@ -364,8 +378,8 @@ export default function TexasMedMap() {
       >
         <defs>
           <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
-            <stop offset="0%"   stopColor="#0f2340" />
-            <stop offset="100%" stopColor="#07111f" />
+            <stop offset="0%"   stopColor="#0e2038" />
+            <stop offset="100%" stopColor="#09162a" />
           </radialGradient>
           <filter id="txGlow" x="-8%" y="-8%" width="116%" height="116%">
             <feGaussianBlur stdDeviation="4" result="b" />
@@ -380,8 +394,8 @@ export default function TexasMedMap() {
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
           <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
-            <stop offset="0%"   stopColor="#07101e" />
-            <stop offset="100%" stopColor="#030710" />
+            <stop offset="0%"   stopColor="#060d1a" />
+            <stop offset="100%" stopColor="#060d1a" />
           </radialGradient>
         </defs>
 
@@ -747,6 +761,35 @@ function ContactCard({ label, value, href, icon }) {
   );
 }
 
+// ─── Tab Sources ──────────────────────────────────────────────────────────────
+function TabSources({ links }) {
+  return (
+    <div style={{ marginTop: 28, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+      <div style={{ fontSize: 9, fontWeight: 700, color: "#1a3d55", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>
+        Sources
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {links.map((link, i) => (
+          <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{
+            display: "flex", alignItems: "center", gap: 8,
+            textDecoration: "none", padding: "7px 10px",
+            background: "rgba(255,255,255,0.02)", borderRadius: 7,
+            border: "1px solid rgba(255,255,255,0.04)",
+            transition: "background 0.15s",
+          }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1e4d6a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            <span style={{ fontSize: 11, color: "#2d6a8a", fontWeight: 500, lineHeight: 1.4 }}>{link.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
 function TabOverview({ school, cfg }) {
   return (
@@ -775,6 +818,12 @@ function TabOverview({ school, cfg }) {
       <Section title="Key Notes">
         <p style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
       </Section>
+
+      <TabSources links={[
+        { label: "JAMP Participating Schools", url: "https://texasjamp.org/about/participating-schools.html" },
+        { label: "texasjamp.org — Program Overview", url: "https://texasjamp.org" },
+        { label: `${school.shortName} Official Website`, url: school.website },
+      ]} />
     </>
   );
 }
@@ -808,6 +857,12 @@ function TabAdmissions({ school, cfg }) {
         <InfoRow label="Preclinical" value={school.grading.preclinical} />
         <InfoRow label="Clinical"    value={school.grading.clinical} />
       </Section>
+
+      <TabSources links={[
+        { label: "TMDSAS — Texas Medical & Dental Schools Application Service", url: "https://www.tmdsas.com" },
+        { label: "AAMC Data Snapshot — Entering Class Stats", url: "https://www.aamc.org/data-reports/students-residents/data/aamc-data-snapshot" },
+        { label: `${school.shortName} Admissions Page`, url: school.website },
+      ]} />
     </>
   );
 }
@@ -831,6 +886,12 @@ function TabAcademics({ school, cfg }) {
           ))}
         </div>
       </Section>
+
+      <TabSources links={[
+        { label: `${school.shortName} Curriculum Overview`, url: school.website },
+        { label: "USMLE — United States Medical Licensing Examination", url: "https://www.usmle.org" },
+        { label: "NBOME — COMLEX-USA (for DO programs)", url: "https://www.nbome.org/comlex-usa/" },
+      ]} />
     </>
   );
 }
@@ -852,6 +913,12 @@ function TabResearch({ school, cfg }) {
           ))}
         </div>
       </Section>
+
+      <TabSources links={[
+        { label: "Blue Ridge Institute for Medical Research — NIH Rankings", url: "https://www.brimr.org/NIH_Awards/NIH_Awards.htm" },
+        { label: "NIH Research Portfolio Online Reporting Tools (RePORTER)", url: "https://reporter.nih.gov" },
+        { label: `${school.shortName} Research Programs`, url: school.website },
+      ]} />
     </>
   );
 }
