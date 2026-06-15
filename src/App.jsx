@@ -6,10 +6,10 @@ import { X, Phone, Mail, MapPin, FlaskConical, BookOpen, BarChart3, GraduationCa
 
 // ─── Tier Config ──────────────────────────────────────────────────────────────
 const TIER = {
-  1: { color: "#F59E0B", glow: "rgba(245,158,11,0.4)",  label: "Nationally Prominent" },
-  2: { color: "#3B82F6", glow: "rgba(59,130,246,0.4)",  label: "Well-Established" },
-  3: { color: "#10B981", glow: "rgba(16,185,129,0.4)",  label: "Established" },
-  4: { color: "#A855F7", glow: "rgba(168,85,247,0.4)",  label: "Emerging / Newer" },
+  1: { color: "#b84020", glow: "rgba(184,64,32,0.4)",   label: "Nationally Prominent" },
+  2: { color: "#c47820", glow: "rgba(196,120,32,0.4)",  label: "Well-Established" },
+  3: { color: "#7a7040", glow: "rgba(122,112,64,0.4)",  label: "Established" },
+  4: { color: "#a06050", glow: "rgba(160,96,80,0.4)",   label: "Emerging / Newer" },
 };
 
 // ─── School Data ──────────────────────────────────────────────────────────────
