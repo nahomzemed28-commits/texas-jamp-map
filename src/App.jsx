@@ -578,15 +578,7 @@ export default function TexasMedMap() {
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "0 2px 10px rgba(160,70,30,0.45), inset 0 1px 0 rgba(255,255,255,0.15)",
             }}>
-              {/* Texas lone star */}
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <polygon
-                  points="10,1 12.35,7.27 19,7.64 14,12.14 15.56,19 10,15.27 4.44,19 6,12.14 1,7.64 7.65,7.27"
-                  fill="rgba(255,255,255,0.95)"
-                  stroke="rgba(255,200,150,0.4)"
-                  strokeWidth="0.5"
-                />
-              </svg>
+              <span style={{ color: "rgba(255,245,235,0.97)", fontSize: 18, fontWeight: 900, letterSpacing: "-1px", fontFamily: "Georgia, serif", fontStyle: "italic" }}>J</span>
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
