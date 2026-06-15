@@ -6,10 +6,10 @@ import { X, Phone, Mail, MapPin, FlaskConical, BookOpen, BarChart3, GraduationCa
 
 // ─── Tier Config ──────────────────────────────────────────────────────────────
 const TIER = {
-  1: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Nationally Prominent" },
-  2: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Well-Established" },
-  3: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Established" },
-  4: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Emerging / Newer" },
+  1: { color: "#F59E0B", glow: "rgba(245,158,11,0.4)",  label: "Nationally Prominent" },
+  2: { color: "#3B82F6", glow: "rgba(59,130,246,0.4)",  label: "Well-Established" },
+  3: { color: "#10B981", glow: "rgba(16,185,129,0.4)",  label: "Established" },
+  4: { color: "#A855F7", glow: "rgba(168,85,247,0.4)",  label: "Emerging / Newer" },
 };
 
 // ─── School Data ──────────────────────────────────────────────────────────────
@@ -459,19 +459,39 @@ export default function TexasMedMap() {
   return (
     <div style={{
       position: "fixed", inset: 0,
-      background: "radial-gradient(ellipse 140% 130% at 50% 48%, #f2e8d8 0%, #e8d8c4 50%, #dccab2 100%)",
+      background: "radial-gradient(ellipse 130% 120% at 50% 48%, #0f2040 0%, #09152a 40%, #04090f 100%)",
       fontFamily: "'Geist Variable', system-ui, sans-serif",
       overflow: "hidden",
     }}>
 
-      {/* ── Subtle dot texture (full screen) ── */}
+      {/* ── Star Field (full screen) ── */}
       <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} preserveAspectRatio="xMidYMid slice" viewBox="0 0 1440 900">
-        {Array.from({ length: 38 }, (_, r) =>
-          Array.from({ length: 58 }, (_, c) => (
-            <circle key={`${r}-${c}`} cx={c * 25 + 12} cy={r * 24 + 12} r="1"
-              fill="#8a6040" opacity={((r + c) % 7 === 0) ? 0.14 : ((r + c) % 3 === 0) ? 0.06 : 0.03} />
-          ))
-        )}
+        {[
+          [18,8],[72,22],[140,6],[210,18],[295,30],[380,8],[455,24],[540,10],[620,28],[705,12],[790,22],[870,6],[945,20],[1030,14],[1110,28],[1195,8],[1278,22],[1355,10],[1420,26],
+          [30,55],[105,42],[188,60],[265,48],[348,38],[425,58],[508,44],[592,62],[675,40],[752,56],[835,42],[915,60],[995,46],[1075,58],[1155,40],[1240,56],[1322,44],[1400,60],
+          [12,100],[88,88],[168,105],[250,92],[332,108],[415,88],[498,102],[580,90],[662,106],[745,88],[828,104],[910,92],[992,108],[1075,90],[1158,106],[1240,92],[1322,106],[1405,90],
+          [45,148],[122,136],[202,152],[282,138],[365,154],[448,138],[530,152],[615,138],[698,154],[780,138],[862,152],[945,138],[1028,154],[1110,140],[1193,156],[1275,140],[1358,154],[1438,140],
+          [20,198],[98,185],[178,200],[260,186],[342,202],[425,186],[508,200],[592,188],[675,204],[758,188],[840,202],[922,186],[1005,202],[1088,188],[1170,204],[1252,188],[1335,202],[1415,188],
+          [55,248],[132,234],[212,250],[295,236],[378,252],[460,236],[542,250],[625,238],[708,252],[790,238],[872,252],[955,238],[1038,252],[1120,238],[1202,252],[1285,238],[1367,252],[1442,238],
+          [28,298],[105,284],[185,300],[268,286],[350,302],[432,286],[515,300],[598,288],[680,302],[762,288],[845,302],[928,288],[1010,302],[1092,288],[1175,302],[1258,288],[1340,302],[1420,288],
+          [15,348],[92,334],[172,350],[255,336],[338,352],[420,336],[502,350],[585,338],[668,352],[750,338],[832,350],[915,338],[998,352],[1080,338],[1162,352],[1245,338],[1328,352],[1408,338],
+          [42,398],[120,384],[200,400],[282,386],[365,402],[448,386],[530,400],[612,388],[695,402],[778,388],[860,402],[942,388],[1025,402],[1108,388],[1190,402],[1272,388],[1355,402],[1435,388],
+          [22,448],[100,434],[180,450],[262,436],[345,452],[428,436],[510,450],[592,438],[675,452],[758,438],[840,452],[922,438],[1005,452],[1088,438],[1170,452],[1252,438],[1335,452],[1415,438],
+          [55,498],[132,484],[212,500],[295,486],[378,502],[460,486],[542,500],[625,488],[708,502],[790,488],[872,500],[955,488],[1038,502],[1120,488],[1202,502],[1285,488],[1368,502],[1440,488],
+          [28,548],[108,534],[188,550],[270,536],[352,552],[435,536],[518,550],[600,538],[682,552],[765,538],[848,550],[930,538],[1012,552],[1095,538],[1178,552],[1260,538],[1342,552],[1422,538],
+          [15,598],[95,584],[175,600],[258,586],[340,602],[422,586],[505,600],[588,588],[670,602],[752,588],[835,600],[918,588],[1000,602],[1082,588],[1165,602],[1248,588],[1330,602],[1412,588],
+          [42,648],[122,634],[202,650],[285,636],[368,652],[450,636],[532,650],[615,638],[698,652],[780,638],[862,650],[945,638],[1028,652],[1110,638],[1192,652],[1275,638],[1358,652],[1438,638],
+          [20,698],[100,684],[180,700],[262,686],[345,702],[428,686],[510,700],[592,688],[675,702],[758,688],[840,700],[922,688],[1005,702],[1088,688],[1170,702],[1252,688],[1335,702],[1415,688],
+          [55,748],[135,734],[215,750],[298,736],[380,752],[462,736],[545,750],[628,738],[710,752],[792,738],[875,750],[958,738],[1040,752],[1122,738],[1205,752],[1288,738],[1370,752],[1445,738],
+          [18,800],[98,786],[178,802],[260,788],[342,804],[425,788],[508,802],[590,790],[672,804],[755,790],[838,802],[920,790],[1002,804],[1085,790],[1168,804],[1250,790],[1332,804],[1412,790],
+          [45,850],[125,836],[205,852],[288,838],[370,854],[452,838],[535,852],[618,840],[700,854],[782,840],[865,852],[948,840],[1030,854],[1112,840],[1195,854],[1278,840],[1360,854],[1440,840],
+          [22,890],[105,878],[188,892],[270,880],[352,894],[435,878],[518,892],[600,880],[682,894],[765,880],[848,892],[930,880],[1012,894],[1095,880],[1178,892],[1260,880],[1342,892],[1422,880],
+        ].map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy}
+            r={i % 9 === 0 ? 1.5 : i % 5 === 0 ? 1.1 : i % 3 === 0 ? 0.75 : 0.5}
+            fill="white"
+            opacity={i % 9 === 0 ? 0.4 : i % 5 === 0 ? 0.22 : i % 3 === 0 ? 0.13 : 0.07} />
+        ))}
       </svg>
 
       {/* ── Full-Screen Map ── */}
@@ -483,11 +503,11 @@ export default function TexasMedMap() {
       >
         <defs>
           <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
-            <stop offset="0%"   stopColor="#ddc8aa" />
-            <stop offset="100%" stopColor="#ceb898" />
+            <stop offset="0%"   stopColor="#0e2038" />
+            <stop offset="100%" stopColor="#09162a" />
           </radialGradient>
           <filter id="txGlow" x="-8%" y="-8%" width="116%" height="116%">
-            <feGaussianBlur stdDeviation="3" result="b" />
+            <feGaussianBlur stdDeviation="4" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
           <filter id="pinGlow" x="-60%" y="-60%" width="220%" height="220%">
@@ -503,17 +523,17 @@ export default function TexasMedMap() {
         {/* Transparent — background handled by root div */}
 
 
-        {/* Texas — soft shadow */}
-        <path d={TX_PATH} fill="none" stroke="#a07848" strokeWidth="5" filter="url(#txGlow)" opacity="0.3" />
+        {/* Texas — glow border */}
+        <path d={TX_PATH} fill="none" stroke="#1d4ed8" strokeWidth="4" filter="url(#txGlow)" opacity="0.5" />
         {/* Texas — fill */}
         <path d={TX_PATH} fill="url(#txFill)" />
         {/* Texas — crisp edge */}
-        <path d={TX_PATH} fill="none" stroke="#a08050" strokeWidth="1.2" opacity="0.85" />
-        {/* Texas — inner highlight */}
-        <path d={TX_PATH} fill="none" stroke="rgba(255,248,235,0.5)" strokeWidth="1" />
+        <path d={TX_PATH} fill="none" stroke="#2563eb" strokeWidth="1.2" opacity="0.7" />
+        {/* Texas — inner highlight top */}
+        <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
 
         {/* Gulf label */}
-        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#b09070"
+        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#0f2e4a"
           fontStyle="italic" letterSpacing="1.5" style={{ userSelect: "none", pointerEvents: "none" }}>
           Gulf of Mexico
         </text>
@@ -538,25 +558,24 @@ export default function TexasMedMap() {
               style={{ cursor: "pointer", opacity: isVis ? 1 : 0.08, transition: "opacity 0.25s" }}
             >
               {/* Outer glow ring */}
-              <circle cx={cx} cy={cy} r={r + 5} fill="#a8c4d4" opacity={isSel || isHov ? 0.2 : 0.1} filter="url(#pinGlow)" />
+              <circle cx={cx} cy={cy} r={r + 5} fill={cfg.color} opacity={isSel || isHov ? 0.2 : 0.1} filter="url(#pinGlow)" />
 
               {/* Pulse ring when selected */}
-              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill="#a8c4d4" opacity={0.2} />}
+              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill={cfg.color} opacity={0.15} />}
 
               {/* DO dashed outer ring */}
               {school.degree === "DO" && (
                 <circle cx={cx} cy={cy} r={r + 5} fill="none"
-                  stroke="#4a6a7a" strokeWidth="1.2" strokeDasharray="3 2" opacity={0.6} />
+                  stroke={cfg.color} strokeWidth="1.2" strokeDasharray="3 2" opacity={0.6} />
               )}
 
               {/* Main dot */}
               <circle cx={cx} cy={cy} r={r} fill={cfg.color}
-                stroke="#4a6a7a" strokeWidth={isSel ? 1.8 : 1.2}
                 filter={isSel || isHov ? "url(#pinGlowSel)" : undefined}
-                opacity={isSel || isHov ? 1 : 0.95} />
+                opacity={isSel || isHov ? 1 : 0.9} />
 
-              {/* Dark center */}
-              <circle cx={cx} cy={cy} r={r * 0.38} fill="#2a4858" opacity={0.65} />
+              {/* White center */}
+              <circle cx={cx} cy={cy} r={r * 0.38} fill="white" opacity={0.95} />
             </g>
           );
         })}
@@ -566,7 +585,7 @@ export default function TexasMedMap() {
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0,
         padding: "22px 28px 56px",
-        background: "linear-gradient(to bottom, rgba(238,228,212,0.97) 30%, transparent)",
+        background: "linear-gradient(to bottom, rgba(5,9,18,0.98) 30%, transparent)",
         display: "flex", alignItems: "flex-start", justifyContent: "space-between",
         pointerEvents: "none", zIndex: 10,
       }}>
@@ -574,19 +593,19 @@ export default function TexasMedMap() {
         <div style={{ pointerEvents: "auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 5 }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 10,
-              background: "#fff4eb",
+              width: 34, height: 34, borderRadius: 9,
+              background: "linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 2px 10px rgba(255,244,235,0.5), inset 0 1px 0 rgba(255,255,255,0.4)",
+              boxShadow: "0 0 18px rgba(99,102,241,0.45)",
             }}>
-              <span style={{ color: "#2a1608", fontSize: 18, fontWeight: 900, letterSpacing: "-1px", fontFamily: "Georgia, serif", fontStyle: "italic" }}>J</span>
+              <span style={{ color: "white", fontSize: 15, fontWeight: 900, letterSpacing: "-0.5px" }}>J</span>
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: "#2a1608", letterSpacing: "-0.01em", fontFamily: "Georgia, serif", fontStyle: "italic" }}>JAMP</span>
-                <span style={{ fontSize: 17, fontWeight: 400, color: "#7a5030", letterSpacing: "0em", fontFamily: "Georgia, serif", fontStyle: "italic" }}>Medical Schools</span>
+                <span style={{ fontSize: 17, fontWeight: 800, color: "#e2edf8", letterSpacing: "-0.02em" }}>JAMP</span>
+                <span style={{ fontSize: 17, fontWeight: 300, color: "#3d6a91", letterSpacing: "-0.01em" }}>Medical Schools</span>
               </div>
-              <div style={{ fontSize: 10, color: "#a07850", letterSpacing: "0.1em", marginTop: 1, fontFamily: "Georgia, serif" }}>
+              <div style={{ fontSize: 10, color: "#1e4d6a", letterSpacing: "0.12em", marginTop: 1 }}>
                 {showJampOnly ? "14 JAMP" : "16 TOTAL"} INSTITUTIONS · TEXAS
               </div>
             </div>
@@ -599,15 +618,15 @@ export default function TexasMedMap() {
           <button onClick={() => setShowJampOnly(v => !v)} style={{
             padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
             cursor: "pointer", border: "none", outline: "none",
-            background: showJampOnly ? "#fff4eb" : "rgba(255,248,235,0.65)",
-            color: showJampOnly ? "#2a1608" : "#7a5030",
-            boxShadow: showJampOnly ? "0 2px 10px rgba(255,244,235,0.45), inset 0 0 0 1.5px rgba(200,180,150,0.45)" : "inset 0 0 0 1px rgba(160,120,70,0.3)",
-            backdropFilter: "blur(8px)", transition: "all 0.18s", letterSpacing: "0.04em",
+            background: showJampOnly ? "rgba(99,102,241,0.22)" : "rgba(255,255,255,0.04)",
+            color: showJampOnly ? "#818cf8" : "#2d5a7a",
+            boxShadow: showJampOnly ? "0 0 12px rgba(99,102,241,0.35), inset 0 0 0 1px rgba(99,102,241,0.5)" : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+            backdropFilter: "blur(12px)", transition: "all 0.18s", letterSpacing: "0.04em",
           }}>
             JAMP Only
           </button>
 
-          <div style={{ width: 1, height: 18, background: "rgba(160,120,70,0.25)" }} />
+          <div style={{ width: 1, height: 18, background: "rgba(255,255,255,0.08)" }} />
 
           {/* Tier filters */}
           {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `T${t}`, color: c.color }))].map(item => {
@@ -616,10 +635,10 @@ export default function TexasMedMap() {
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
                 padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
                 cursor: "pointer", border: "none", outline: "none",
-                background: active ? "#fff4eb" : "rgba(255,248,235,0.65)",
-                color: active ? "#2a1608" : "#7a5030",
-                boxShadow: active ? "0 2px 10px rgba(255,244,235,0.4), inset 0 0 0 1.5px rgba(200,180,150,0.45)" : "inset 0 0 0 1px rgba(160,120,70,0.3)",
-                backdropFilter: "blur(8px)", transition: "all 0.18s",
+                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,255,255,0.04)",
+                color: active ? (item.color || "#3b82f6") : "#2d5a7a",
+                boxShadow: active ? `0 0 12px ${item.color || "#3b82f6"}33, inset 0 0 0 1px ${item.color || "#3b82f6"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+                backdropFilter: "blur(12px)", transition: "all 0.18s",
               }}>
                 {item.label}
               </button>
@@ -636,14 +655,14 @@ export default function TexasMedMap() {
       }}>
         {Object.entries(TIER).map(([t, cfg]) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 6px ${cfg.color}88` }} />
-            <span style={{ fontSize: 10, color: "#7a5030", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 8px ${cfg.color}88` }} />
+            <span style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
           </div>
         ))}
-        <div style={{ width: 1, height: 16, background: "rgba(160,120,70,0.3)", margin: "0 2px" }} />
+        <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.07)", margin: "0 2px" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #a07840", opacity: 0.6 }} />
-          <span style={{ fontSize: 10, color: "#7a5030", fontWeight: 600 }}>DO</span>
+          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #6b7280", opacity: 0.5 }} />
+          <span style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600 }}>DO</span>
         </div>
       </div>
 
@@ -666,9 +685,9 @@ export default function TexasMedMap() {
               return { x: prev.x + prev.w / 2 - newW / 2, y: prev.y + prev.h / 2 - newH / 2, w: newW, h: newH };
             });
           }} style={{
-            width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(160,120,70,0.3)",
-            background: "rgba(255,248,235,0.7)", backdropFilter: "blur(12px)",
-            color: "#7a5030", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
+            width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(255,255,255,0.1)",
+            background: "rgba(6,13,26,0.85)", backdropFilter: "blur(12px)",
+            color: "#4d7fa8", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             lineHeight: 1,
           }}>
@@ -730,8 +749,8 @@ function HoverCard({ school, pos }) {
         <p style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8", margin: "0 0 3px", lineHeight: 1.35 }}>
           {school.name}
         </p>
-        <p style={{ fontSize: 11, color: "#a8c4d4", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
-          <MapPin size={10} strokeWidth={2.5} color="#a8c4d4" />
+        <p style={{ fontSize: 11, color: "#2d5a7a", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
+          <MapPin size={10} strokeWidth={2.5} color="#2d5a7a" />
           {school.location}
         </p>
       </div>
@@ -741,21 +760,21 @@ function HoverCard({ school, pos }) {
         {[
           { label: "MCAT",  value: school.admissions.mcat,      color: "#f59e0b" },
           { label: "GPA",   value: school.admissions.gpa,       color: "#10b981" },
-          { label: "Class", value: school.admissions.classSize,  color: "#fff4eb" },
+          { label: "Class", value: school.admissions.classSize,  color: "#3b82f6" },
         ].map((s, i) => (
           <div key={s.label} style={{
             textAlign: "center", padding: "10px 4px",
             borderRight: i < 2 ? "1px solid rgba(255,255,255,0.05)" : "none",
           }}>
             <div style={{ fontSize: 15, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
-            <div style={{ fontSize: 9, color: "#a8c4d4", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+            <div style={{ fontSize: 9, color: "#2d5a7a", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
           </div>
         ))}
       </div>
 
       <div style={{ padding: "7px 14px", fontSize: 10, borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {!school.isJAMP && (
-          <span style={{ color: "#fff4eb", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(255,244,59,0.15)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(200,180,150,0.45)" }}>
+          <span style={{ color: "#818cf8", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(99,102,241,0.12)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(99,102,241,0.3)" }}>
             Non-JAMP
           </span>
         )}
@@ -793,7 +812,7 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
           <button onClick={onClose} style={{
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", color: "#a8c4d4", transition: "all 0.15s",
+            cursor: "pointer", color: "#4d7fa8", transition: "all 0.15s",
           }}>
             <X size={15} strokeWidth={2.5} />
           </button>
@@ -813,8 +832,8 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
         <h2 style={{ fontSize: 20, fontWeight: 800, color: "#ddeeff", margin: "0 0 4px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
           {school.name}
         </h2>
-        <p style={{ fontSize: 12, color: "#a8c4d4", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
-          <MapPin size={11} strokeWidth={2} color="#a8c4d4" />
+        <p style={{ fontSize: 12, color: "#2d5a7a", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
+          <MapPin size={11} strokeWidth={2} color="#2d5a7a" />
           {school.location}
         </p>
 
@@ -827,7 +846,7 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
                 flex: 1, padding: "9px 4px", background: "none", border: "none",
                 borderBottom: active ? `2px solid ${cfg.color}` : "2px solid transparent",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
-                color: active ? cfg.color : "#a8c4d4",
+                color: active ? cfg.color : "#2d5a7a",
                 fontSize: 11, fontWeight: 600,
                 transition: "all 0.15s",
               }}>
@@ -867,7 +886,7 @@ function Section({ title, children }) {
 function InfoRow({ label, value, highlight }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-      <span style={{ fontSize: 12, color: "#a8c4d4", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "#2d5a7a", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
       <span style={{ fontSize: 12, color: highlight || "#b0ccdf", fontWeight: 600, textAlign: "right", lineHeight: 1.4 }}>{value}</span>
     </div>
   );
@@ -891,10 +910,10 @@ function ContactCard({ label, value, href, icon }) {
       border: "1px solid rgba(255,255,255,0.06)",
       textDecoration: "none", marginBottom: 8, transition: "background 0.15s",
     }}>
-      <div style={{ color: "#fff4eb", flexShrink: 0 }}>{icon}</div>
+      <div style={{ color: "#3b82f6", flexShrink: 0 }}>{icon}</div>
       <div>
-        <div style={{ fontSize: 10, color: "#a8c4d4", fontWeight: 600, marginBottom: 1 }}>{label}</div>
-        <div style={{ fontSize: 12, color: "#a8c4d4", fontWeight: 600 }}>{value}</div>
+        <div style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, marginBottom: 1 }}>{label}</div>
+        <div style={{ fontSize: 12, color: "#7fb3d8", fontWeight: 600 }}>{value}</div>
       </div>
     </a>
   );
@@ -942,7 +961,7 @@ function TabOverview({ school, cfg }) {
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8" }}>{school.jamp.name}</div>
-                <div style={{ fontSize: 10, color: "#a8c4d4" }}>JAMP Coordinator</div>
+                <div style={{ fontSize: 10, color: "#2d5a7a" }}>JAMP Coordinator</div>
               </div>
             </div>
             <ContactCard label="Phone" value={school.jamp.phone} href={`tel:${school.jamp.phone}`} icon={<Phone size={14} />} />
@@ -956,13 +975,13 @@ function TabOverview({ school, cfg }) {
         </Section>
       ) : (
         <Section title="JAMP Status">
-          <div style={{ padding: "14px 16px", background: "rgba(255,244,59,0.1)", borderRadius: 12, border: "1px solid rgba(255,244,59,0.25)", marginBottom: 4 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#fff4eb", marginBottom: 6 }}>Not a JAMP Institution</div>
+          <div style={{ padding: "14px 16px", background: "rgba(99,102,241,0.07)", borderRadius: 12, border: "1px solid rgba(99,102,241,0.2)", marginBottom: 4 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#818cf8", marginBottom: 6 }}>Not a JAMP Institution</div>
             <p style={{ fontSize: 12, color: "#6070a0", lineHeight: 1.65, margin: 0 }}>
               This school is a private institution and does not participate in the Joint Admissions Medical Program. JAMP benefits (guaranteed admission, financial support, mentoring) are not available here.
             </p>
             <a href="https://texasjamp.org/about/participating-schools.html" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#fff4eb", textDecoration: "none" }}>
+              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#818cf8", textDecoration: "none" }}>
               View JAMP participating schools →
             </a>
           </div>
@@ -970,7 +989,7 @@ function TabOverview({ school, cfg }) {
       )}
 
       <Section title="Key Notes">
-        <p style={{ fontSize: 12, color: "#a8c4d4", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
+        <p style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
       </Section>
 
       <TabSources links={[
@@ -988,7 +1007,7 @@ function TabAdmissions({ school, cfg }) {
   const stats = [
     { label: "MCAT",        value: school.admissions.mcat,       color: "#f59e0b", sub: "Median" },
     { label: "GPA",         value: school.admissions.gpa,        color: "#10b981", sub: "Overall" },
-    { label: "Class Size",  value: school.admissions.classSize,  color: "#fff4eb", sub: "Students" },
+    { label: "Class Size",  value: school.admissions.classSize,  color: "#3b82f6", sub: "Students" },
     { label: "Accept Rate", value: school.admissions.acceptRate, color: "#a855f7", sub: "of applicants" },
   ];
 
@@ -1003,7 +1022,7 @@ function TabAdmissions({ school, cfg }) {
             }}>
               <div style={{ fontSize: 26, fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: 4 }}>{s.value}</div>
               <div style={{ fontSize: 11, fontWeight: 700, color: "#d4e8f8", marginBottom: 2 }}>{s.label}</div>
-              <div style={{ fontSize: 10, color: "#a8c4d4" }}>{s.sub}</div>
+              <div style={{ fontSize: 10, color: "#2d5a7a" }}>{s.sub}</div>
             </div>
           ))}
         </div>
@@ -1037,7 +1056,7 @@ function TabAcademics({ school, cfg }) {
           {school.specialties.map((sp, i) => (
             <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", background: "rgba(255,255,255,0.02)", borderRadius: 9, border: "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: cfg.color, flexShrink: 0, marginTop: 4, boxShadow: `0 0 6px ${cfg.glow}` }} />
-              <span style={{ fontSize: 12, color: "#a8c4d4", lineHeight: 1.5 }}>{sp}</span>
+              <span style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.5 }}>{sp}</span>
             </div>
           ))}
         </div>
@@ -1057,8 +1076,8 @@ function TabResearch({ school, cfg }) {
     <>
       <Section title="NIH Funding">
         <div style={{ padding: "16px", borderRadius: 12, background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.18)", marginBottom: 4 }}>
-          <InfoRow label="National Rank" value={school.nih.rank} highlight="#fff4eb" />
-          <InfoRow label="Funding"       value={school.nih.funding} highlight="#fff4eb" />
+          <InfoRow label="National Rank" value={school.nih.rank} highlight="#60a5fa" />
+          <InfoRow label="Funding"       value={school.nih.funding} highlight="#60a5fa" />
         </div>
       </Section>
 
