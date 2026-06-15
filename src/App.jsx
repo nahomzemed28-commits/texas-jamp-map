@@ -403,7 +403,16 @@ export default function TexasMedMap() {
   const [tierFilter,    setTierFilter]    = useState(0);
   const [showJampOnly,  setShowJampOnly]  = useState(false);
   const [vb, setVb] = useState({ x: 0, y: 0, w: SVG_W, h: SVG_H });
-  const mapSvgRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const mapSvgRef       = useRef(null);
+  const lastTouchDist   = useRef(null);
+  const lastTouchPos    = useRef(null);
+
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
 
   const visible = SCHOOLS.filter(s =>
     (tierFilter === 0 || s.tier === tierFilter) &&
@@ -448,13 +457,73 @@ export default function TexasMedMap() {
     });
   }, []);
 
-  // Attach as non-passive so preventDefault() actually works
+  // Attach wheel as non-passive so preventDefault() works
   useEffect(() => {
     const svg = mapSvgRef.current;
     if (!svg) return;
     svg.addEventListener("wheel", handleWheel, { passive: false });
     return () => svg.removeEventListener("wheel", handleWheel);
   }, [handleWheel]);
+
+  // Touch handlers — pinch-to-zoom + single-finger pan
+  const handleTouchStart = useCallback((e) => {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      lastTouchDist.current = Math.sqrt(dx * dx + dy * dy);
+      lastTouchPos.current  = null;
+    } else if (e.touches.length === 1) {
+      lastTouchPos.current  = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      lastTouchDist.current = null;
+    }
+  }, []);
+
+  const handleTouchMove = useCallback((e) => {
+    e.preventDefault();
+    const svg  = mapSvgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+
+    if (e.touches.length === 2 && lastTouchDist.current !== null) {
+      const dx   = e.touches[0].clientX - e.touches[1].clientX;
+      const dy   = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const factor = lastTouchDist.current / dist;
+      lastTouchDist.current = dist;
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      setVb(prev => {
+        const newW = Math.min(SVG_W * 3, Math.max(SVG_W * 0.2, prev.w * factor));
+        const newH = Math.min(SVG_H * 3, Math.max(SVG_H * 0.2, prev.h * factor));
+        const svgX = prev.x + ((midX - rect.left) / rect.width)  * prev.w;
+        const svgY = prev.y + ((midY - rect.top)  / rect.height) * prev.h;
+        return { x: svgX - ((midX - rect.left) / rect.width) * newW, y: svgY - ((midY - rect.top) / rect.height) * newH, w: newW, h: newH };
+      });
+    } else if (e.touches.length === 1 && lastTouchPos.current) {
+      const dx = e.touches[0].clientX - lastTouchPos.current.x;
+      const dy = e.touches[0].clientY - lastTouchPos.current.y;
+      setVb(prev => ({ x: prev.x - (dx / rect.width) * prev.w, y: prev.y - (dy / rect.height) * prev.h, w: prev.w, h: prev.h }));
+      lastTouchPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    lastTouchDist.current = null;
+    lastTouchPos.current  = null;
+  }, []);
+
+  useEffect(() => {
+    const svg = mapSvgRef.current;
+    if (!svg) return;
+    svg.addEventListener("touchstart", handleTouchStart, { passive: false });
+    svg.addEventListener("touchmove",  handleTouchMove,  { passive: false });
+    svg.addEventListener("touchend",   handleTouchEnd);
+    return () => {
+      svg.removeEventListener("touchstart", handleTouchStart);
+      svg.removeEventListener("touchmove",  handleTouchMove);
+      svg.removeEventListener("touchend",   handleTouchEnd);
+    };
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   return (
     <div style={{
@@ -547,7 +616,7 @@ export default function TexasMedMap() {
           const isHov = hovered?.id  === school.id;
           const isVis = visible.some(s => s.id === school.id);
           const cfg   = TIER[school.tier];
-          const r     = isSel ? 10 : isHov ? 9 : 7;
+          const r     = isSel ? 12 : isHov ? 10 : isMobile ? 9 : 7;
 
           return (
             <g
@@ -584,40 +653,46 @@ export default function TexasMedMap() {
       {/* ── Floating Header ── */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0,
-        padding: "22px 28px 56px",
+        padding: isMobile ? "14px 16px 40px" : "22px 28px 56px",
         background: "linear-gradient(to bottom, rgba(5,9,18,0.98) 30%, transparent)",
         display: "flex", alignItems: "flex-start", justifyContent: "space-between",
+        flexWrap: isMobile ? "wrap" : "nowrap", gap: isMobile ? 8 : 0,
         pointerEvents: "none", zIndex: 10,
       }}>
         {/* Brand */}
-        <div style={{ pointerEvents: "auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 5 }}>
+        <div style={{ pointerEvents: "auto", flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{
-              width: 34, height: 34, borderRadius: 9,
+              width: isMobile ? 28 : 34, height: isMobile ? 28 : 34, borderRadius: 8,
               background: "linear-gradient(135deg, #8b1a1a 0%, #991a1a 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 18px rgba(240,128,128,0.45)",
+              boxShadow: "0 0 14px rgba(240,128,128,0.4)",
             }}>
-              <span style={{ color: "white", fontSize: 15, fontWeight: 900, letterSpacing: "-0.5px" }}>J</span>
+              <span style={{ color: "white", fontSize: isMobile ? 13 : 15, fontWeight: 900, letterSpacing: "-0.5px" }}>J</span>
             </div>
             <div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#e2edf8", letterSpacing: "-0.02em" }}>JAMP</span>
-                <span style={{ fontSize: 17, fontWeight: 300, color: "#3d6a91", letterSpacing: "-0.01em" }}>Medical Schools</span>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                <span style={{ fontSize: isMobile ? 14 : 17, fontWeight: 800, color: "#e2edf8", letterSpacing: "-0.02em" }}>JAMP</span>
+                {!isMobile && <span style={{ fontSize: 17, fontWeight: 300, color: "#3d6a91", letterSpacing: "-0.01em" }}>Medical Schools</span>}
               </div>
-              <div style={{ fontSize: 10, color: "#1e4d6a", letterSpacing: "0.12em", marginTop: 1 }}>
+              {!isMobile && <div style={{ fontSize: 10, color: "#1e4d6a", letterSpacing: "0.12em", marginTop: 1 }}>
                 {showJampOnly ? "14 JAMP" : "16 TOTAL"} INSTITUTIONS · TEXAS
-              </div>
+              </div>}
             </div>
           </div>
         </div>
 
-        {/* Filters */}
-        <div style={{ pointerEvents: "auto", display: "flex", gap: 6, alignItems: "center" }}>
-          {/* JAMP-only toggle */}
+        {/* Filters — scrollable on mobile */}
+        <div style={{
+          pointerEvents: "auto", display: "flex", gap: 6, alignItems: "center",
+          overflowX: isMobile ? "auto" : "visible",
+          WebkitOverflowScrolling: "touch",
+          flexShrink: isMobile ? 1 : 0,
+          paddingBottom: isMobile ? 2 : 0,
+        }}>
           <button onClick={() => setShowJampOnly(v => !v)} style={{
-            padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
-            cursor: "pointer", border: "none", outline: "none",
+            padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+            cursor: "pointer", border: "none", outline: "none", flexShrink: 0,
             background: showJampOnly ? "rgba(240,128,128,0.22)" : "rgba(255,255,255,0.04)",
             color: showJampOnly ? "#f4a0a0" : "#b05858",
             boxShadow: showJampOnly ? "0 0 12px rgba(240,128,128,0.35), inset 0 0 0 1px rgba(240,128,128,0.5)" : "inset 0 0 0 1px rgba(255,255,255,0.07)",
@@ -626,15 +701,14 @@ export default function TexasMedMap() {
             JAMP Only
           </button>
 
-          <div style={{ width: 1, height: 18, background: "rgba(255,255,255,0.08)" }} />
+          <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.08)", flexShrink: 0 }} />
 
-          {/* Tier filters */}
           {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `T${t}`, color: c.color }))].map(item => {
             const active = tierFilter === item.t;
             return (
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
-                padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
-                cursor: "pointer", border: "none", outline: "none",
+                padding: "5px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+                cursor: "pointer", border: "none", outline: "none", flexShrink: 0,
                 background: active ? (item.color ? `${item.color}22` : "rgba(240,128,128,0.15)") : "rgba(255,255,255,0.04)",
                 color: active ? (item.color || "#f08080") : "#b05858",
                 boxShadow: active ? `0 0 12px ${item.color || "#f08080"}33, inset 0 0 0 1px ${item.color || "#f08080"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
@@ -696,18 +770,19 @@ export default function TexasMedMap() {
         ))}
       </div>
 
-      {/* ── Hover Preview Card ── */}
-      {hovered && !selected && (
+      {/* ── Hover Preview Card (desktop only) ── */}
+      {hovered && !selected && !isMobile && (
         <HoverCard school={hovered} pos={hoverPos} />
       )}
 
-      {/* ── Slide-in Detail Panel ── */}
+      {/* ── Detail Panel (side on desktop, bottom sheet on mobile) ── */}
       {selected && (
         <SchoolPanel
           school={selected}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onClose={() => setSelected(null)}
+          isMobile={isMobile}
         />
       )}
     </div>
@@ -785,7 +860,7 @@ function HoverCard({ school, pos }) {
 }
 
 // ─── School Panel ─────────────────────────────────────────────────────────────
-function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
+function SchoolPanel({ school, activeTab, setActiveTab, onClose, isMobile }) {
   const cfg  = TIER[school.tier];
   const tabs = [
     { id: "overview",   label: "Overview",   icon: <MapPin size={13} /> },
@@ -796,19 +871,23 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
 
   return (
     <div style={{
-      position: "fixed", top: 0, right: 0, bottom: 0, width: 440,
+      position: "fixed",
+      ...(isMobile
+        ? { bottom: 0, left: 0, right: 0, height: "72vh", borderRadius: "20px 20px 0 0", borderTop: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 -20px 60px rgba(0,0,0,0.7)", animation: "slideUp 0.28s cubic-bezier(0.22,1,0.36,1)" }
+        : { top: 0, right: 0, bottom: 0, width: 440, borderLeft: "1px solid rgba(255,255,255,0.06)", boxShadow: "-20px 0 80px rgba(0,0,0,0.6)", animation: "slideIn 0.26s cubic-bezier(0.22,1,0.36,1)" }
+      ),
       background: "rgba(18, 4, 4, 0.98)",
       backdropFilter: "blur(32px)",
-      borderLeft: `1px solid rgba(255,255,255,0.06)`,
       display: "flex", flexDirection: "column",
       zIndex: 50,
-      boxShadow: "-20px 0 80px rgba(0,0,0,0.6)",
-      animation: "slideIn 0.26s cubic-bezier(0.22,1,0.36,1)",
     }}>
+      {/* Mobile drag handle */}
+      {isMobile && <div style={{ width: 40, height: 4, background: "rgba(255,255,255,0.18)", borderRadius: 2, margin: "10px auto 0" }} />}
+
       {/* Panel header */}
-      <div style={{ padding: "24px 24px 0", flexShrink: 0, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ padding: isMobile ? "12px 20px 0" : "24px 24px 0", flexShrink: 0, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         {/* Top row */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: isMobile ? 10 : 16 }}>
           <button onClick={onClose} style={{
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
