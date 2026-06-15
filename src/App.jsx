@@ -6,10 +6,10 @@ import { X, Phone, Mail, MapPin, FlaskConical, BookOpen, BarChart3, GraduationCa
 
 // ─── Tier Config ──────────────────────────────────────────────────────────────
 const TIER = {
-  1: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Nationally Prominent" },
-  2: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Well-Established" },
-  3: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Established" },
-  4: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Emerging / Newer" },
+  1: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Nationally Prominent" },
+  2: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Well-Established" },
+  3: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Established" },
+  4: { color: "#a8c4d4", glow: "rgba(168,196,212,0.45)", label: "Emerging / Newer" },
 };
 
 // ─── School Data ──────────────────────────────────────────────────────────────
@@ -538,25 +538,25 @@ export default function TexasMedMap() {
               style={{ cursor: "pointer", opacity: isVis ? 1 : 0.08, transition: "opacity 0.25s" }}
             >
               {/* Outer glow ring */}
-              <circle cx={cx} cy={cy} r={r + 5} fill="#5a3010" opacity={isSel || isHov ? 0.18 : 0.08} filter="url(#pinGlow)" />
+              <circle cx={cx} cy={cy} r={r + 5} fill="#a8c4d4" opacity={isSel || isHov ? 0.2 : 0.1} filter="url(#pinGlow)" />
 
               {/* Pulse ring when selected */}
-              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill="#5a3010" opacity={0.15} />}
+              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill="#a8c4d4" opacity={0.2} />}
 
               {/* DO dashed outer ring */}
               {school.degree === "DO" && (
                 <circle cx={cx} cy={cy} r={r + 5} fill="none"
-                  stroke="#5a3010" strokeWidth="1.2" strokeDasharray="3 2" opacity={0.55} />
+                  stroke="#4a6a7a" strokeWidth="1.2" strokeDasharray="3 2" opacity={0.6} />
               )}
 
               {/* Main dot */}
               <circle cx={cx} cy={cy} r={r} fill={cfg.color}
-                stroke="#3a1e08" strokeWidth={isSel ? 1.8 : 1.2}
+                stroke="#4a6a7a" strokeWidth={isSel ? 1.8 : 1.2}
                 filter={isSel || isHov ? "url(#pinGlowSel)" : undefined}
                 opacity={isSel || isHov ? 1 : 0.95} />
 
               {/* Dark center */}
-              <circle cx={cx} cy={cy} r={r * 0.38} fill="#3a1e08" opacity={0.7} />
+              <circle cx={cx} cy={cy} r={r * 0.38} fill="#2a4858" opacity={0.65} />
             </g>
           );
         })}
@@ -730,8 +730,8 @@ function HoverCard({ school, pos }) {
         <p style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8", margin: "0 0 3px", lineHeight: 1.35 }}>
           {school.name}
         </p>
-        <p style={{ fontSize: 11, color: "#2d5a7a", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
-          <MapPin size={10} strokeWidth={2.5} color="#2d5a7a" />
+        <p style={{ fontSize: 11, color: "#a8c4d4", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
+          <MapPin size={10} strokeWidth={2.5} color="#a8c4d4" />
           {school.location}
         </p>
       </div>
@@ -748,7 +748,7 @@ function HoverCard({ school, pos }) {
             borderRight: i < 2 ? "1px solid rgba(255,255,255,0.05)" : "none",
           }}>
             <div style={{ fontSize: 15, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
-            <div style={{ fontSize: 9, color: "#2d5a7a", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+            <div style={{ fontSize: 9, color: "#a8c4d4", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
           </div>
         ))}
       </div>
@@ -793,7 +793,7 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
           <button onClick={onClose} style={{
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", color: "#4d7fa8", transition: "all 0.15s",
+            cursor: "pointer", color: "#a8c4d4", transition: "all 0.15s",
           }}>
             <X size={15} strokeWidth={2.5} />
           </button>
@@ -813,8 +813,8 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
         <h2 style={{ fontSize: 20, fontWeight: 800, color: "#ddeeff", margin: "0 0 4px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
           {school.name}
         </h2>
-        <p style={{ fontSize: 12, color: "#2d5a7a", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
-          <MapPin size={11} strokeWidth={2} color="#2d5a7a" />
+        <p style={{ fontSize: 12, color: "#a8c4d4", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
+          <MapPin size={11} strokeWidth={2} color="#a8c4d4" />
           {school.location}
         </p>
 
@@ -827,7 +827,7 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
                 flex: 1, padding: "9px 4px", background: "none", border: "none",
                 borderBottom: active ? `2px solid ${cfg.color}` : "2px solid transparent",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
-                color: active ? cfg.color : "#2d5a7a",
+                color: active ? cfg.color : "#a8c4d4",
                 fontSize: 11, fontWeight: 600,
                 transition: "all 0.15s",
               }}>
@@ -867,7 +867,7 @@ function Section({ title, children }) {
 function InfoRow({ label, value, highlight }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-      <span style={{ fontSize: 12, color: "#2d5a7a", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "#a8c4d4", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
       <span style={{ fontSize: 12, color: highlight || "#b0ccdf", fontWeight: 600, textAlign: "right", lineHeight: 1.4 }}>{value}</span>
     </div>
   );
@@ -893,8 +893,8 @@ function ContactCard({ label, value, href, icon }) {
     }}>
       <div style={{ color: "#fff4eb", flexShrink: 0 }}>{icon}</div>
       <div>
-        <div style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, marginBottom: 1 }}>{label}</div>
-        <div style={{ fontSize: 12, color: "#7fb3d8", fontWeight: 600 }}>{value}</div>
+        <div style={{ fontSize: 10, color: "#a8c4d4", fontWeight: 600, marginBottom: 1 }}>{label}</div>
+        <div style={{ fontSize: 12, color: "#a8c4d4", fontWeight: 600 }}>{value}</div>
       </div>
     </a>
   );
@@ -942,7 +942,7 @@ function TabOverview({ school, cfg }) {
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8" }}>{school.jamp.name}</div>
-                <div style={{ fontSize: 10, color: "#2d5a7a" }}>JAMP Coordinator</div>
+                <div style={{ fontSize: 10, color: "#a8c4d4" }}>JAMP Coordinator</div>
               </div>
             </div>
             <ContactCard label="Phone" value={school.jamp.phone} href={`tel:${school.jamp.phone}`} icon={<Phone size={14} />} />
@@ -970,7 +970,7 @@ function TabOverview({ school, cfg }) {
       )}
 
       <Section title="Key Notes">
-        <p style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
+        <p style={{ fontSize: 12, color: "#a8c4d4", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
       </Section>
 
       <TabSources links={[
@@ -1003,7 +1003,7 @@ function TabAdmissions({ school, cfg }) {
             }}>
               <div style={{ fontSize: 26, fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: 4 }}>{s.value}</div>
               <div style={{ fontSize: 11, fontWeight: 700, color: "#d4e8f8", marginBottom: 2 }}>{s.label}</div>
-              <div style={{ fontSize: 10, color: "#2d5a7a" }}>{s.sub}</div>
+              <div style={{ fontSize: 10, color: "#a8c4d4" }}>{s.sub}</div>
             </div>
           ))}
         </div>
@@ -1037,7 +1037,7 @@ function TabAcademics({ school, cfg }) {
           {school.specialties.map((sp, i) => (
             <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", background: "rgba(255,255,255,0.02)", borderRadius: 9, border: "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: cfg.color, flexShrink: 0, marginTop: 4, boxShadow: `0 0 6px ${cfg.glow}` }} />
-              <span style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.5 }}>{sp}</span>
+              <span style={{ fontSize: 12, color: "#a8c4d4", lineHeight: 1.5 }}>{sp}</span>
             </div>
           ))}
         </div>
