@@ -459,39 +459,19 @@ export default function TexasMedMap() {
   return (
     <div style={{
       position: "fixed", inset: 0,
-      background: "radial-gradient(ellipse 130% 120% at 50% 48%, #0f2040 0%, #09152a 40%, #04090f 100%)",
+      background: "radial-gradient(ellipse 140% 130% at 50% 48%, #dde3ec 0%, #cdd5e0 55%, #bec8d5 100%)",
       fontFamily: "'Geist Variable', system-ui, sans-serif",
       overflow: "hidden",
     }}>
 
-      {/* ── Star Field (full screen) ── */}
+      {/* ── Subtle dot texture (full screen) ── */}
       <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} preserveAspectRatio="xMidYMid slice" viewBox="0 0 1440 900">
-        {[
-          [18,8],[72,22],[140,6],[210,18],[295,30],[380,8],[455,24],[540,10],[620,28],[705,12],[790,22],[870,6],[945,20],[1030,14],[1110,28],[1195,8],[1278,22],[1355,10],[1420,26],
-          [30,55],[105,42],[188,60],[265,48],[348,38],[425,58],[508,44],[592,62],[675,40],[752,56],[835,42],[915,60],[995,46],[1075,58],[1155,40],[1240,56],[1322,44],[1400,60],
-          [12,100],[88,88],[168,105],[250,92],[332,108],[415,88],[498,102],[580,90],[662,106],[745,88],[828,104],[910,92],[992,108],[1075,90],[1158,106],[1240,92],[1322,106],[1405,90],
-          [45,148],[122,136],[202,152],[282,138],[365,154],[448,138],[530,152],[615,138],[698,154],[780,138],[862,152],[945,138],[1028,154],[1110,140],[1193,156],[1275,140],[1358,154],[1438,140],
-          [20,198],[98,185],[178,200],[260,186],[342,202],[425,186],[508,200],[592,188],[675,204],[758,188],[840,202],[922,186],[1005,202],[1088,188],[1170,204],[1252,188],[1335,202],[1415,188],
-          [55,248],[132,234],[212,250],[295,236],[378,252],[460,236],[542,250],[625,238],[708,252],[790,238],[872,252],[955,238],[1038,252],[1120,238],[1202,252],[1285,238],[1367,252],[1442,238],
-          [28,298],[105,284],[185,300],[268,286],[350,302],[432,286],[515,300],[598,288],[680,302],[762,288],[845,302],[928,288],[1010,302],[1092,288],[1175,302],[1258,288],[1340,302],[1420,288],
-          [15,348],[92,334],[172,350],[255,336],[338,352],[420,336],[502,350],[585,338],[668,352],[750,338],[832,350],[915,338],[998,352],[1080,338],[1162,352],[1245,338],[1328,352],[1408,338],
-          [42,398],[120,384],[200,400],[282,386],[365,402],[448,386],[530,400],[612,388],[695,402],[778,388],[860,402],[942,388],[1025,402],[1108,388],[1190,402],[1272,388],[1355,402],[1435,388],
-          [22,448],[100,434],[180,450],[262,436],[345,452],[428,436],[510,450],[592,438],[675,452],[758,438],[840,452],[922,438],[1005,452],[1088,438],[1170,452],[1252,438],[1335,452],[1415,438],
-          [55,498],[132,484],[212,500],[295,486],[378,502],[460,486],[542,500],[625,488],[708,502],[790,488],[872,500],[955,488],[1038,502],[1120,488],[1202,502],[1285,488],[1368,502],[1440,488],
-          [28,548],[108,534],[188,550],[270,536],[352,552],[435,536],[518,550],[600,538],[682,552],[765,538],[848,550],[930,538],[1012,552],[1095,538],[1178,552],[1260,538],[1342,552],[1422,538],
-          [15,598],[95,584],[175,600],[258,586],[340,602],[422,586],[505,600],[588,588],[670,602],[752,588],[835,600],[918,588],[1000,602],[1082,588],[1165,602],[1248,588],[1330,602],[1412,588],
-          [42,648],[122,634],[202,650],[285,636],[368,652],[450,636],[532,650],[615,638],[698,652],[780,638],[862,650],[945,638],[1028,652],[1110,638],[1192,652],[1275,638],[1358,652],[1438,638],
-          [20,698],[100,684],[180,700],[262,686],[345,702],[428,686],[510,700],[592,688],[675,702],[758,688],[840,700],[922,688],[1005,702],[1088,688],[1170,702],[1252,688],[1335,702],[1415,688],
-          [55,748],[135,734],[215,750],[298,736],[380,752],[462,736],[545,750],[628,738],[710,752],[792,738],[875,750],[958,738],[1040,752],[1122,738],[1205,752],[1288,738],[1370,752],[1445,738],
-          [18,800],[98,786],[178,802],[260,788],[342,804],[425,788],[508,802],[590,790],[672,804],[755,790],[838,802],[920,790],[1002,804],[1085,790],[1168,804],[1250,790],[1332,804],[1412,790],
-          [45,850],[125,836],[205,852],[288,838],[370,854],[452,838],[535,852],[618,840],[700,854],[782,840],[865,852],[948,840],[1030,854],[1112,840],[1195,854],[1278,840],[1360,854],[1440,840],
-          [22,890],[105,878],[188,892],[270,880],[352,894],[435,878],[518,892],[600,880],[682,894],[765,880],[848,892],[930,880],[1012,894],[1095,880],[1178,892],[1260,880],[1342,892],[1422,880],
-        ].map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy}
-            r={i % 9 === 0 ? 1.5 : i % 5 === 0 ? 1.1 : i % 3 === 0 ? 0.75 : 0.5}
-            fill="white"
-            opacity={i % 9 === 0 ? 0.4 : i % 5 === 0 ? 0.22 : i % 3 === 0 ? 0.13 : 0.07} />
-        ))}
+        {Array.from({ length: 38 }, (_, r) =>
+          Array.from({ length: 58 }, (_, c) => (
+            <circle key={`${r}-${c}`} cx={c * 25 + 12} cy={r * 24 + 12} r="1"
+              fill="#7a8ea8" opacity={((r + c) % 7 === 0) ? 0.18 : ((r + c) % 3 === 0) ? 0.08 : 0.04} />
+          ))
+        )}
       </svg>
 
       {/* ── Full-Screen Map ── */}
@@ -503,11 +483,11 @@ export default function TexasMedMap() {
       >
         <defs>
           <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
-            <stop offset="0%"   stopColor="#0e2038" />
-            <stop offset="100%" stopColor="#09162a" />
+            <stop offset="0%"   stopColor="#c2cedd" />
+            <stop offset="100%" stopColor="#b4c2d4" />
           </radialGradient>
           <filter id="txGlow" x="-8%" y="-8%" width="116%" height="116%">
-            <feGaussianBlur stdDeviation="4" result="b" />
+            <feGaussianBlur stdDeviation="3" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
           <filter id="pinGlow" x="-60%" y="-60%" width="220%" height="220%">
@@ -523,17 +503,17 @@ export default function TexasMedMap() {
         {/* Transparent — background handled by root div */}
 
 
-        {/* Texas — glow border */}
-        <path d={TX_PATH} fill="none" stroke="#1d4ed8" strokeWidth="4" filter="url(#txGlow)" opacity="0.5" />
+        {/* Texas — soft shadow */}
+        <path d={TX_PATH} fill="none" stroke="#8a9eb8" strokeWidth="5" filter="url(#txGlow)" opacity="0.35" />
         {/* Texas — fill */}
         <path d={TX_PATH} fill="url(#txFill)" />
         {/* Texas — crisp edge */}
-        <path d={TX_PATH} fill="none" stroke="#2563eb" strokeWidth="1.2" opacity="0.7" />
-        {/* Texas — inner highlight top */}
-        <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+        <path d={TX_PATH} fill="none" stroke="#8ca4be" strokeWidth="1.2" opacity="0.9" />
+        {/* Texas — inner highlight */}
+        <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1" />
 
         {/* Gulf label */}
-        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#0f2e4a"
+        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#8a9eb8"
           fontStyle="italic" letterSpacing="1.5" style={{ userSelect: "none", pointerEvents: "none" }}>
           Gulf of Mexico
         </text>
@@ -585,7 +565,7 @@ export default function TexasMedMap() {
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0,
         padding: "22px 28px 56px",
-        background: "linear-gradient(to bottom, rgba(5,9,18,0.98) 30%, transparent)",
+        background: "linear-gradient(to bottom, rgba(205,213,224,0.97) 30%, transparent)",
         display: "flex", alignItems: "flex-start", justifyContent: "space-between",
         pointerEvents: "none", zIndex: 10,
       }}>
@@ -596,16 +576,16 @@ export default function TexasMedMap() {
               width: 34, height: 34, borderRadius: 9,
               background: "linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 18px rgba(99,102,241,0.45)",
+              boxShadow: "0 2px 12px rgba(99,102,241,0.35)",
             }}>
               <span style={{ color: "white", fontSize: 15, fontWeight: 900, letterSpacing: "-0.5px" }}>J</span>
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#e2edf8", letterSpacing: "-0.02em" }}>JAMP</span>
-                <span style={{ fontSize: 17, fontWeight: 300, color: "#3d6a91", letterSpacing: "-0.01em" }}>Medical Schools</span>
+                <span style={{ fontSize: 17, fontWeight: 800, color: "#1a2d42", letterSpacing: "-0.02em" }}>JAMP</span>
+                <span style={{ fontSize: 17, fontWeight: 300, color: "#4a6a88", letterSpacing: "-0.01em" }}>Medical Schools</span>
               </div>
-              <div style={{ fontSize: 10, color: "#1e4d6a", letterSpacing: "0.12em", marginTop: 1 }}>
+              <div style={{ fontSize: 10, color: "#7a9ab8", letterSpacing: "0.12em", marginTop: 1 }}>
                 {showJampOnly ? "14 JAMP" : "16 TOTAL"} INSTITUTIONS · TEXAS
               </div>
             </div>
@@ -618,15 +598,15 @@ export default function TexasMedMap() {
           <button onClick={() => setShowJampOnly(v => !v)} style={{
             padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
             cursor: "pointer", border: "none", outline: "none",
-            background: showJampOnly ? "rgba(99,102,241,0.22)" : "rgba(255,255,255,0.04)",
-            color: showJampOnly ? "#818cf8" : "#2d5a7a",
-            boxShadow: showJampOnly ? "0 0 12px rgba(99,102,241,0.35), inset 0 0 0 1px rgba(99,102,241,0.5)" : "inset 0 0 0 1px rgba(255,255,255,0.07)",
-            backdropFilter: "blur(12px)", transition: "all 0.18s", letterSpacing: "0.04em",
+            background: showJampOnly ? "rgba(99,102,241,0.18)" : "rgba(255,255,255,0.5)",
+            color: showJampOnly ? "#4f46e5" : "#4a6a88",
+            boxShadow: showJampOnly ? "inset 0 0 0 1.5px rgba(99,102,241,0.6)" : "inset 0 0 0 1px rgba(100,130,160,0.3)",
+            backdropFilter: "blur(8px)", transition: "all 0.18s", letterSpacing: "0.04em",
           }}>
             JAMP Only
           </button>
 
-          <div style={{ width: 1, height: 18, background: "rgba(255,255,255,0.08)" }} />
+          <div style={{ width: 1, height: 18, background: "rgba(100,130,160,0.2)" }} />
 
           {/* Tier filters */}
           {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `T${t}`, color: c.color }))].map(item => {
@@ -635,10 +615,10 @@ export default function TexasMedMap() {
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
                 padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
                 cursor: "pointer", border: "none", outline: "none",
-                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,255,255,0.04)",
-                color: active ? (item.color || "#3b82f6") : "#2d5a7a",
-                boxShadow: active ? `0 0 12px ${item.color || "#3b82f6"}33, inset 0 0 0 1px ${item.color || "#3b82f6"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
-                backdropFilter: "blur(12px)", transition: "all 0.18s",
+                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,255,255,0.5)",
+                color: active ? (item.color || "#3b82f6") : "#4a6a88",
+                boxShadow: active ? `inset 0 0 0 1.5px ${item.color || "#3b82f6"}88` : "inset 0 0 0 1px rgba(100,130,160,0.3)",
+                backdropFilter: "blur(8px)", transition: "all 0.18s",
               }}>
                 {item.label}
               </button>
@@ -655,14 +635,14 @@ export default function TexasMedMap() {
       }}>
         {Object.entries(TIER).map(([t, cfg]) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 8px ${cfg.color}88` }} />
-            <span style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 6px ${cfg.color}88` }} />
+            <span style={{ fontSize: 10, color: "#4a6a88", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
           </div>
         ))}
-        <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.07)", margin: "0 2px" }} />
+        <div style={{ width: 1, height: 16, background: "rgba(100,130,160,0.25)", margin: "0 2px" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #6b7280", opacity: 0.5 }} />
-          <span style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600 }}>DO</span>
+          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #6b8aad", opacity: 0.6 }} />
+          <span style={{ fontSize: 10, color: "#4a6a88", fontWeight: 600 }}>DO</span>
         </div>
       </div>
 
@@ -685,9 +665,9 @@ export default function TexasMedMap() {
               return { x: prev.x + prev.w / 2 - newW / 2, y: prev.y + prev.h / 2 - newH / 2, w: newW, h: newH };
             });
           }} style={{
-            width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(255,255,255,0.1)",
-            background: "rgba(6,13,26,0.85)", backdropFilter: "blur(12px)",
-            color: "#4d7fa8", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
+            width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(100,130,160,0.25)",
+            background: "rgba(255,255,255,0.6)", backdropFilter: "blur(12px)",
+            color: "#4a6a88", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             lineHeight: 1,
           }}>
