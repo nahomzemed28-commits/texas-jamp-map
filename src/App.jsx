@@ -6,10 +6,10 @@ import { X, Phone, Mail, MapPin, FlaskConical, BookOpen, BarChart3, GraduationCa
 
 // ─── Tier Config ──────────────────────────────────────────────────────────────
 const TIER = {
-  1: { color: "#b84020", glow: "rgba(184,64,32,0.4)",   label: "Nationally Prominent" },
-  2: { color: "#c47820", glow: "rgba(196,120,32,0.4)",  label: "Well-Established" },
-  3: { color: "#7a7040", glow: "rgba(122,112,64,0.4)",  label: "Established" },
-  4: { color: "#a06050", glow: "rgba(160,96,80,0.4)",   label: "Emerging / Newer" },
+  1: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Nationally Prominent" },
+  2: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Well-Established" },
+  3: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Established" },
+  4: { color: "#fff4eb", glow: "rgba(255,244,235,0.45)", label: "Emerging / Newer" },
 };
 
 // ─── School Data ──────────────────────────────────────────────────────────────
@@ -538,24 +538,25 @@ export default function TexasMedMap() {
               style={{ cursor: "pointer", opacity: isVis ? 1 : 0.08, transition: "opacity 0.25s" }}
             >
               {/* Outer glow ring */}
-              <circle cx={cx} cy={cy} r={r + 5} fill={cfg.color} opacity={isSel || isHov ? 0.2 : 0.1} filter="url(#pinGlow)" />
+              <circle cx={cx} cy={cy} r={r + 5} fill="#5a3010" opacity={isSel || isHov ? 0.18 : 0.08} filter="url(#pinGlow)" />
 
               {/* Pulse ring when selected */}
-              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill={cfg.color} opacity={0.15} />}
+              {isSel && <circle className="pulse-ring" cx={cx} cy={cy} r={r + 9} fill="#5a3010" opacity={0.15} />}
 
               {/* DO dashed outer ring */}
               {school.degree === "DO" && (
                 <circle cx={cx} cy={cy} r={r + 5} fill="none"
-                  stroke={cfg.color} strokeWidth="1.2" strokeDasharray="3 2" opacity={0.6} />
+                  stroke="#5a3010" strokeWidth="1.2" strokeDasharray="3 2" opacity={0.55} />
               )}
 
               {/* Main dot */}
               <circle cx={cx} cy={cy} r={r} fill={cfg.color}
+                stroke="#3a1e08" strokeWidth={isSel ? 1.8 : 1.2}
                 filter={isSel || isHov ? "url(#pinGlowSel)" : undefined}
-                opacity={isSel || isHov ? 1 : 0.9} />
+                opacity={isSel || isHov ? 1 : 0.95} />
 
-              {/* White center */}
-              <circle cx={cx} cy={cy} r={r * 0.38} fill="white" opacity={0.95} />
+              {/* Dark center */}
+              <circle cx={cx} cy={cy} r={r * 0.38} fill="#3a1e08" opacity={0.7} />
             </g>
           );
         })}
@@ -574,11 +575,11 @@ export default function TexasMedMap() {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 5 }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10,
-              background: "linear-gradient(145deg, #c4622a 0%, #8a3a18 100%)",
+              background: "#fff4eb",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 2px 10px rgba(160,70,30,0.45), inset 0 1px 0 rgba(255,255,255,0.15)",
+              boxShadow: "0 2px 10px rgba(255,244,235,0.5), inset 0 1px 0 rgba(255,255,255,0.4)",
             }}>
-              <span style={{ color: "rgba(255,245,235,0.97)", fontSize: 18, fontWeight: 900, letterSpacing: "-1px", fontFamily: "Georgia, serif", fontStyle: "italic" }}>J</span>
+              <span style={{ color: "#2a1608", fontSize: 18, fontWeight: 900, letterSpacing: "-1px", fontFamily: "Georgia, serif", fontStyle: "italic" }}>J</span>
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
@@ -598,9 +599,9 @@ export default function TexasMedMap() {
           <button onClick={() => setShowJampOnly(v => !v)} style={{
             padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
             cursor: "pointer", border: "none", outline: "none",
-            background: showJampOnly ? "rgba(180,80,40,0.14)" : "rgba(255,248,235,0.65)",
-            color: showJampOnly ? "#b04828" : "#7a5030",
-            boxShadow: showJampOnly ? "inset 0 0 0 1.5px rgba(180,80,40,0.55)" : "inset 0 0 0 1px rgba(160,120,70,0.3)",
+            background: showJampOnly ? "#fff4eb" : "rgba(255,248,235,0.65)",
+            color: showJampOnly ? "#2a1608" : "#7a5030",
+            boxShadow: showJampOnly ? "0 2px 10px rgba(255,244,235,0.45), inset 0 0 0 1.5px rgba(200,180,150,0.45)" : "inset 0 0 0 1px rgba(160,120,70,0.3)",
             backdropFilter: "blur(8px)", transition: "all 0.18s", letterSpacing: "0.04em",
           }}>
             JAMP Only
@@ -615,9 +616,9 @@ export default function TexasMedMap() {
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
                 padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
                 cursor: "pointer", border: "none", outline: "none",
-                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,248,235,0.65)",
-                color: active ? (item.color || "#3b82f6") : "#7a5030",
-                boxShadow: active ? `inset 0 0 0 1.5px ${item.color || "#3b82f6"}88` : "inset 0 0 0 1px rgba(160,120,70,0.3)",
+                background: active ? "#fff4eb" : "rgba(255,248,235,0.65)",
+                color: active ? "#2a1608" : "#7a5030",
+                boxShadow: active ? "0 2px 10px rgba(255,244,235,0.4), inset 0 0 0 1.5px rgba(200,180,150,0.45)" : "inset 0 0 0 1px rgba(160,120,70,0.3)",
                 backdropFilter: "blur(8px)", transition: "all 0.18s",
               }}>
                 {item.label}
@@ -740,7 +741,7 @@ function HoverCard({ school, pos }) {
         {[
           { label: "MCAT",  value: school.admissions.mcat,      color: "#f59e0b" },
           { label: "GPA",   value: school.admissions.gpa,       color: "#10b981" },
-          { label: "Class", value: school.admissions.classSize,  color: "#3b82f6" },
+          { label: "Class", value: school.admissions.classSize,  color: "#fff4eb" },
         ].map((s, i) => (
           <div key={s.label} style={{
             textAlign: "center", padding: "10px 4px",
@@ -754,7 +755,7 @@ function HoverCard({ school, pos }) {
 
       <div style={{ padding: "7px 14px", fontSize: 10, borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {!school.isJAMP && (
-          <span style={{ color: "#818cf8", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(99,102,241,0.12)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(99,102,241,0.3)" }}>
+          <span style={{ color: "#fff4eb", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(255,244,59,0.15)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(200,180,150,0.45)" }}>
             Non-JAMP
           </span>
         )}
@@ -890,7 +891,7 @@ function ContactCard({ label, value, href, icon }) {
       border: "1px solid rgba(255,255,255,0.06)",
       textDecoration: "none", marginBottom: 8, transition: "background 0.15s",
     }}>
-      <div style={{ color: "#3b82f6", flexShrink: 0 }}>{icon}</div>
+      <div style={{ color: "#fff4eb", flexShrink: 0 }}>{icon}</div>
       <div>
         <div style={{ fontSize: 10, color: "#2d5a7a", fontWeight: 600, marginBottom: 1 }}>{label}</div>
         <div style={{ fontSize: 12, color: "#7fb3d8", fontWeight: 600 }}>{value}</div>
@@ -955,13 +956,13 @@ function TabOverview({ school, cfg }) {
         </Section>
       ) : (
         <Section title="JAMP Status">
-          <div style={{ padding: "14px 16px", background: "rgba(99,102,241,0.07)", borderRadius: 12, border: "1px solid rgba(99,102,241,0.2)", marginBottom: 4 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#818cf8", marginBottom: 6 }}>Not a JAMP Institution</div>
+          <div style={{ padding: "14px 16px", background: "rgba(255,244,59,0.1)", borderRadius: 12, border: "1px solid rgba(255,244,59,0.25)", marginBottom: 4 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#fff4eb", marginBottom: 6 }}>Not a JAMP Institution</div>
             <p style={{ fontSize: 12, color: "#6070a0", lineHeight: 1.65, margin: 0 }}>
               This school is a private institution and does not participate in the Joint Admissions Medical Program. JAMP benefits (guaranteed admission, financial support, mentoring) are not available here.
             </p>
             <a href="https://texasjamp.org/about/participating-schools.html" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#818cf8", textDecoration: "none" }}>
+              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#fff4eb", textDecoration: "none" }}>
               View JAMP participating schools →
             </a>
           </div>
@@ -987,7 +988,7 @@ function TabAdmissions({ school, cfg }) {
   const stats = [
     { label: "MCAT",        value: school.admissions.mcat,       color: "#f59e0b", sub: "Median" },
     { label: "GPA",         value: school.admissions.gpa,        color: "#10b981", sub: "Overall" },
-    { label: "Class Size",  value: school.admissions.classSize,  color: "#3b82f6", sub: "Students" },
+    { label: "Class Size",  value: school.admissions.classSize,  color: "#fff4eb", sub: "Students" },
     { label: "Accept Rate", value: school.admissions.acceptRate, color: "#a855f7", sub: "of applicants" },
   ];
 
@@ -1056,8 +1057,8 @@ function TabResearch({ school, cfg }) {
     <>
       <Section title="NIH Funding">
         <div style={{ padding: "16px", borderRadius: 12, background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.18)", marginBottom: 4 }}>
-          <InfoRow label="National Rank" value={school.nih.rank} highlight="#60a5fa" />
-          <InfoRow label="Funding"       value={school.nih.funding} highlight="#60a5fa" />
+          <InfoRow label="National Rank" value={school.nih.rank} highlight="#fff4eb" />
+          <InfoRow label="Funding"       value={school.nih.funding} highlight="#fff4eb" />
         </div>
       </Section>
 
