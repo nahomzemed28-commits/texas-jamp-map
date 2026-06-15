@@ -1,7 +1,9 @@
 {
-  "name": "texas-map",
-  "private": true,
-  "version": "0.0.0",
+  "name": "texas-jamp-map",
+  "version": "1.0.0",
+  "description": "Interactive map of all 16 Texas medical schools — hover for stats, click for full details, filter by JAMP eligibility and tier.",
+  "homepage": "https://github.com/nahomzemed28-commits/texas-jamp-map",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,49 +1,70 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this repository.
 
 ## Commands
 
 ```bash
-npm run dev      # start dev server at http://localhost:5173
+npm run dev      # dev server at http://localhost:5173
 npm run build    # production build → dist/
 npm run preview  # serve the production build locally
 npm run lint     # ESLint (react-hooks + react-refresh rules)
 ```
 
-There are no tests. No test runner is configured.
+No test suite is configured. Visual verification via `npm run dev` is the primary QA method.
 
 ## Architecture
 
-Everything lives in a single file: `src/App.jsx`. There is no routing, no state management library, and no CSS framework — all styling is inline.
+Everything lives in one file: **`src/App.jsx`**. No routing, no state management library, no CSS framework — all styles are inline objects.
 
-### Data layer (top of App.jsx)
+### Data layer
 
-- **`TIER`** — object keyed 1–4 defining color, background, border, and label for each school tier.
-- **`SCHOOLS`** — array of 14 hardcoded school objects. Each entry contains: `admissions`, `grading`, `curriculum`, `specialties`, `nih`, `jamp` (contact), `duals`, and SVG offset hints (`dx`, `dy`).
+- **`TIER`** — object keyed 1–4 with `color`, `glow`, and `label` for each tier.
+- **`SCHOOLS`** — array of 16 school objects (14 JAMP + 2 non-JAMP). Each has `isJAMP: boolean`, `jamp` (coordinator object or `null` for non-JAMP), `admissions`, `grading`, `curriculum`, `specialties`, `nih`, `duals`, `website`, and map offset hints `dx`/`dy`.
 
-To add or update a school, edit the `SCHOOLS` array directly. There is no API or external data source.
+To add or update a school, edit `SCHOOLS` directly. No API or external data source.
 
 ### Map projection
 
-The SVG map uses a custom linear projection (`project(lng, lat)`) that maps geographic coordinates to an 800×600 SVG viewport. The Texas border is a hardcoded polygon string (`TX_POLY`). No mapping library (Leaflet, Mapbox, etc.) is used.
+Uses **D3-geo** (`geoMercator().fitExtent()`) projecting the Texas GeoJSON feature (extracted from `us-atlas` TopoJSON via `topojson-client`) into an 800×600 SVG viewport. `project(lng, lat)` converts geographic coordinates to SVG pixel positions.
+
+Zoom state (`vb`) is a `{ x, y, w, h }` viewBox object updated by scroll-wheel (non-passive listener) and +/−/⌂ buttons.
 
 ### Component tree
 
 ```
-TexasMedMap          ← root; owns selected / hovered / showAllLabels state
-├── SVG map          ← renders TX_POLY + SCHOOLS markers inline
-├── SchoolDetail     ← right panel when a school is selected
-│   ├── Section      ← titled section wrapper
-│   ├── InfoRow      ← label/value row
-│   └── Badge        ← pill chip
-└── SchoolList       ← right panel when nothing is selected; schools grouped by tier
+TexasMedMap
+├── Star field SVG (full-screen, position:absolute, pointerEvents:none)
+├── Map SVG (D3-geo Texas + school markers)
+│   ├── Texas path (glow + fill + crisp edge)
+│   └── School markers (glowing circles, tier-colored)
+├── Floating header (brand + JAMP-only toggle + tier filter pills)
+├── Bottom legend
+├── Zoom controls (+/−/⌂)
+├── HoverCard (fixed, follows cursor)
+└── SchoolPanel (slide-in from right)
+    ├── TabOverview   (JAMP coordinator or Non-JAMP notice + key notes)
+    ├── TabAdmissions (stats grid + grading system)
+    ├── TabAcademics  (curriculum + specialties)
+    └── TabResearch   (NIH funding + dual degrees)
+    Each tab ends with a TabSources section.
 ```
 
-### Styling convention
+### Key state
 
-All styles are inline style objects. Hover effects that can't be done with inline styles (`:hover`, `::-webkit-scrollbar`, `@keyframes`) are injected via a `<style>` tag rendered inside `TexasMedMap`.
+| State | Type | Purpose |
+|---|---|---|
+| `selected` | school \| null | Opens SchoolPanel |
+| `hovered` | school \| null | Shows HoverCard |
+| `hoverPos` | `{x,y}` | Screen coords for HoverCard |
+| `tierFilter` | 0–4 | 0 = All tiers |
+| `showJampOnly` | bool | Dims non-JAMP schools |
+| `vb` | `{x,y,w,h}` | SVG viewBox for zoom |
 
-### Source file relationship
+### Source sync
 
-`texas_med_schools_map.jsx` in the parent directory (`Med School Prep/`) is the original standalone source. `src/App.jsx` is a copy of it used by the Vite dev server. Keep them in sync manually when making changes.
+After editing `src/App.jsx`, copy to the parent directory:
+
+```bash
+cp src/App.jsx ../texas_med_schools_map.jsx
+```
