@@ -459,7 +459,7 @@ export default function TexasMedMap() {
   return (
     <div style={{
       position: "fixed", inset: 0,
-      background: "radial-gradient(ellipse 140% 130% at 50% 48%, #dde3ec 0%, #cdd5e0 55%, #bec8d5 100%)",
+      background: "radial-gradient(ellipse 140% 130% at 50% 48%, #f2e8d8 0%, #e8d8c4 50%, #dccab2 100%)",
       fontFamily: "'Geist Variable', system-ui, sans-serif",
       overflow: "hidden",
     }}>
@@ -469,7 +469,7 @@ export default function TexasMedMap() {
         {Array.from({ length: 38 }, (_, r) =>
           Array.from({ length: 58 }, (_, c) => (
             <circle key={`${r}-${c}`} cx={c * 25 + 12} cy={r * 24 + 12} r="1"
-              fill="#7a8ea8" opacity={((r + c) % 7 === 0) ? 0.18 : ((r + c) % 3 === 0) ? 0.08 : 0.04} />
+              fill="#8a6040" opacity={((r + c) % 7 === 0) ? 0.14 : ((r + c) % 3 === 0) ? 0.06 : 0.03} />
           ))
         )}
       </svg>
@@ -483,8 +483,8 @@ export default function TexasMedMap() {
       >
         <defs>
           <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
-            <stop offset="0%"   stopColor="#c2cedd" />
-            <stop offset="100%" stopColor="#b4c2d4" />
+            <stop offset="0%"   stopColor="#ddc8aa" />
+            <stop offset="100%" stopColor="#ceb898" />
           </radialGradient>
           <filter id="txGlow" x="-8%" y="-8%" width="116%" height="116%">
             <feGaussianBlur stdDeviation="3" result="b" />
@@ -504,16 +504,16 @@ export default function TexasMedMap() {
 
 
         {/* Texas — soft shadow */}
-        <path d={TX_PATH} fill="none" stroke="#8a9eb8" strokeWidth="5" filter="url(#txGlow)" opacity="0.35" />
+        <path d={TX_PATH} fill="none" stroke="#a07848" strokeWidth="5" filter="url(#txGlow)" opacity="0.3" />
         {/* Texas — fill */}
         <path d={TX_PATH} fill="url(#txFill)" />
         {/* Texas — crisp edge */}
-        <path d={TX_PATH} fill="none" stroke="#8ca4be" strokeWidth="1.2" opacity="0.9" />
+        <path d={TX_PATH} fill="none" stroke="#a08050" strokeWidth="1.2" opacity="0.85" />
         {/* Texas — inner highlight */}
-        <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1" />
+        <path d={TX_PATH} fill="none" stroke="rgba(255,248,235,0.5)" strokeWidth="1" />
 
         {/* Gulf label */}
-        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#8a9eb8"
+        <text x="660" y="535" textAnchor="middle" fontSize="11" fill="#b09070"
           fontStyle="italic" letterSpacing="1.5" style={{ userSelect: "none", pointerEvents: "none" }}>
           Gulf of Mexico
         </text>
@@ -565,7 +565,7 @@ export default function TexasMedMap() {
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0,
         padding: "22px 28px 56px",
-        background: "linear-gradient(to bottom, rgba(205,213,224,0.97) 30%, transparent)",
+        background: "linear-gradient(to bottom, rgba(238,228,212,0.97) 30%, transparent)",
         display: "flex", alignItems: "flex-start", justifyContent: "space-between",
         pointerEvents: "none", zIndex: 10,
       }}>
@@ -582,10 +582,10 @@ export default function TexasMedMap() {
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#1a2d42", letterSpacing: "-0.02em" }}>JAMP</span>
-                <span style={{ fontSize: 17, fontWeight: 300, color: "#4a6a88", letterSpacing: "-0.01em" }}>Medical Schools</span>
+                <span style={{ fontSize: 17, fontWeight: 800, color: "#2a1608", letterSpacing: "-0.02em" }}>JAMP</span>
+                <span style={{ fontSize: 17, fontWeight: 300, color: "#7a5030", letterSpacing: "-0.01em" }}>Medical Schools</span>
               </div>
-              <div style={{ fontSize: 10, color: "#7a9ab8", letterSpacing: "0.12em", marginTop: 1 }}>
+              <div style={{ fontSize: 10, color: "#a07850", letterSpacing: "0.12em", marginTop: 1 }}>
                 {showJampOnly ? "14 JAMP" : "16 TOTAL"} INSTITUTIONS · TEXAS
               </div>
             </div>
@@ -598,15 +598,15 @@ export default function TexasMedMap() {
           <button onClick={() => setShowJampOnly(v => !v)} style={{
             padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
             cursor: "pointer", border: "none", outline: "none",
-            background: showJampOnly ? "rgba(99,102,241,0.18)" : "rgba(255,255,255,0.5)",
-            color: showJampOnly ? "#4f46e5" : "#4a6a88",
-            boxShadow: showJampOnly ? "inset 0 0 0 1.5px rgba(99,102,241,0.6)" : "inset 0 0 0 1px rgba(100,130,160,0.3)",
+            background: showJampOnly ? "rgba(180,80,40,0.14)" : "rgba(255,248,235,0.65)",
+            color: showJampOnly ? "#b04828" : "#7a5030",
+            boxShadow: showJampOnly ? "inset 0 0 0 1.5px rgba(180,80,40,0.55)" : "inset 0 0 0 1px rgba(160,120,70,0.3)",
             backdropFilter: "blur(8px)", transition: "all 0.18s", letterSpacing: "0.04em",
           }}>
             JAMP Only
           </button>
 
-          <div style={{ width: 1, height: 18, background: "rgba(100,130,160,0.2)" }} />
+          <div style={{ width: 1, height: 18, background: "rgba(160,120,70,0.25)" }} />
 
           {/* Tier filters */}
           {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `T${t}`, color: c.color }))].map(item => {
@@ -615,9 +615,9 @@ export default function TexasMedMap() {
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
                 padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
                 cursor: "pointer", border: "none", outline: "none",
-                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,255,255,0.5)",
-                color: active ? (item.color || "#3b82f6") : "#4a6a88",
-                boxShadow: active ? `inset 0 0 0 1.5px ${item.color || "#3b82f6"}88` : "inset 0 0 0 1px rgba(100,130,160,0.3)",
+                background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,248,235,0.65)",
+                color: active ? (item.color || "#3b82f6") : "#7a5030",
+                boxShadow: active ? `inset 0 0 0 1.5px ${item.color || "#3b82f6"}88` : "inset 0 0 0 1px rgba(160,120,70,0.3)",
                 backdropFilter: "blur(8px)", transition: "all 0.18s",
               }}>
                 {item.label}
@@ -636,13 +636,13 @@ export default function TexasMedMap() {
         {Object.entries(TIER).map(([t, cfg]) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 6px ${cfg.color}88` }} />
-            <span style={{ fontSize: 10, color: "#4a6a88", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
+            <span style={{ fontSize: 10, color: "#7a5030", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
           </div>
         ))}
-        <div style={{ width: 1, height: 16, background: "rgba(100,130,160,0.25)", margin: "0 2px" }} />
+        <div style={{ width: 1, height: 16, background: "rgba(160,120,70,0.3)", margin: "0 2px" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #6b8aad", opacity: 0.6 }} />
-          <span style={{ fontSize: 10, color: "#4a6a88", fontWeight: 600 }}>DO</span>
+          <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #a07840", opacity: 0.6 }} />
+          <span style={{ fontSize: 10, color: "#7a5030", fontWeight: 600 }}>DO</span>
         </div>
       </div>
 
@@ -665,9 +665,9 @@ export default function TexasMedMap() {
               return { x: prev.x + prev.w / 2 - newW / 2, y: prev.y + prev.h / 2 - newH / 2, w: newW, h: newH };
             });
           }} style={{
-            width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(100,130,160,0.25)",
-            background: "rgba(255,255,255,0.6)", backdropFilter: "blur(12px)",
-            color: "#4a6a88", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
+            width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(160,120,70,0.3)",
+            background: "rgba(255,248,235,0.7)", backdropFilter: "blur(12px)",
+            color: "#7a5030", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             lineHeight: 1,
           }}>
