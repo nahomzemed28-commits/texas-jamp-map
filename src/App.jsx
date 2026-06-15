@@ -459,7 +459,7 @@ export default function TexasMedMap() {
   return (
     <div style={{
       position: "fixed", inset: 0,
-      background: "radial-gradient(ellipse 130% 120% at 50% 48%, #200808 0%, #180505 40%, #100303 100%)",
+      background: "radial-gradient(ellipse 130% 120% at 50% 48%, #3d1212 0%, #301010 40%, #221010 100%)",
       fontFamily: "'Geist Variable', system-ui, sans-serif",
       overflow: "hidden",
     }}>
@@ -503,8 +503,8 @@ export default function TexasMedMap() {
       >
         <defs>
           <radialGradient id="txFill" cx="45%" cy="40%" r="65%">
-            <stop offset="0%"   stopColor="#1f0808" />
-            <stop offset="100%" stopColor="#140505" />
+            <stop offset="0%"   stopColor="#3a1414" />
+            <stop offset="100%" stopColor="#2a1010" />
           </radialGradient>
           <filter id="txGlow" x="-8%" y="-8%" width="116%" height="116%">
             <feGaussianBlur stdDeviation="4" result="b" />
