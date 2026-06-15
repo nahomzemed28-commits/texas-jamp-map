@@ -342,7 +342,7 @@ const SCHOOLS = [
     id: 15, name: "Anne Burnett Marion School of Medicine at TCU", shortName: "TCU Burnett",
     degree: "MD", tier: 3, isJAMP: false, location: "Fort Worth, TX",
     website: "https://mdschool.tcu.edu/",
-    lat: 32.7457, lng: -97.3319, dx: 0, dy: 0,
+    lat: 32.7457, lng: -97.3319, dx: 22, dy: -18,
     jamp: null,
     admissions: { mcat: "512", gpa: "3.82", classSize: "60", acceptRate: "~1–2%" },
     grading: { preclinical: "Pass / Fail", clinical: "Longitudinal evaluation" },
