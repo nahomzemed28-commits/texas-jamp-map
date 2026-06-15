@@ -582,10 +582,10 @@ export default function TexasMedMap() {
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#2a1608", letterSpacing: "-0.02em" }}>JAMP</span>
-                <span style={{ fontSize: 17, fontWeight: 300, color: "#7a5030", letterSpacing: "-0.01em" }}>Medical Schools</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: "#2a1608", letterSpacing: "-0.01em", fontFamily: "Georgia, serif", fontStyle: "italic" }}>JAMP</span>
+                <span style={{ fontSize: 17, fontWeight: 400, color: "#7a5030", letterSpacing: "0em", fontFamily: "Georgia, serif", fontStyle: "italic" }}>Medical Schools</span>
               </div>
-              <div style={{ fontSize: 10, color: "#a07850", letterSpacing: "0.12em", marginTop: 1 }}>
+              <div style={{ fontSize: 10, color: "#a07850", letterSpacing: "0.1em", marginTop: 1, fontFamily: "Georgia, serif" }}>
                 {showJampOnly ? "14 JAMP" : "16 TOTAL"} INSTITUTIONS · TEXAS
               </div>
             </div>
