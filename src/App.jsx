@@ -7,7 +7,7 @@ import { X, Phone, Mail, MapPin, FlaskConical, BookOpen, BarChart3, GraduationCa
 // ─── Tier Config ──────────────────────────────────────────────────────────────
 const TIER = {
   1: { color: "#F59E0B", glow: "rgba(245,158,11,0.4)",  label: "Nationally Prominent" },
-  2: { color: "#e05555", glow: "rgba(224,85,85,0.4)",  label: "Well-Established" },
+  2: { color: "#f08080", glow: "rgba(240,128,128,0.4)",  label: "Well-Established" },
   3: { color: "#10B981", glow: "rgba(16,185,129,0.4)",  label: "Established" },
   4: { color: "#A855F7", glow: "rgba(168,85,247,0.4)",  label: "Emerging / Newer" },
 };
@@ -528,7 +528,7 @@ export default function TexasMedMap() {
         {/* Texas — fill */}
         <path d={TX_PATH} fill="url(#txFill)" />
         {/* Texas — crisp edge */}
-        <path d={TX_PATH} fill="none" stroke="#c43030" strokeWidth="1.2" opacity="0.7" />
+        <path d={TX_PATH} fill="none" stroke="#e86060" strokeWidth="1.2" opacity="0.7" />
         {/* Texas — inner highlight top */}
         <path d={TX_PATH} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
 
@@ -596,7 +596,7 @@ export default function TexasMedMap() {
               width: 34, height: 34, borderRadius: 9,
               background: "linear-gradient(135deg, #8b1a1a 0%, #991a1a 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 18px rgba(200,60,60,0.45)",
+              boxShadow: "0 0 18px rgba(240,128,128,0.45)",
             }}>
               <span style={{ color: "white", fontSize: 15, fontWeight: 900, letterSpacing: "-0.5px" }}>J</span>
             </div>
@@ -618,9 +618,9 @@ export default function TexasMedMap() {
           <button onClick={() => setShowJampOnly(v => !v)} style={{
             padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
             cursor: "pointer", border: "none", outline: "none",
-            background: showJampOnly ? "rgba(200,60,60,0.22)" : "rgba(255,255,255,0.04)",
-            color: showJampOnly ? "#e07070" : "#7a3535",
-            boxShadow: showJampOnly ? "0 0 12px rgba(200,60,60,0.35), inset 0 0 0 1px rgba(200,60,60,0.5)" : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+            background: showJampOnly ? "rgba(240,128,128,0.22)" : "rgba(255,255,255,0.04)",
+            color: showJampOnly ? "#f4a0a0" : "#b05858",
+            boxShadow: showJampOnly ? "0 0 12px rgba(240,128,128,0.35), inset 0 0 0 1px rgba(240,128,128,0.5)" : "inset 0 0 0 1px rgba(255,255,255,0.07)",
             backdropFilter: "blur(12px)", transition: "all 0.18s", letterSpacing: "0.04em",
           }}>
             JAMP Only
@@ -635,9 +635,9 @@ export default function TexasMedMap() {
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
                 padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
                 cursor: "pointer", border: "none", outline: "none",
-                background: active ? (item.color ? `${item.color}22` : "rgba(200,60,60,0.15)") : "rgba(255,255,255,0.04)",
-                color: active ? (item.color || "#e05555") : "#7a3535",
-                boxShadow: active ? `0 0 12px ${item.color || "#e05555"}33, inset 0 0 0 1px ${item.color || "#e05555"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+                background: active ? (item.color ? `${item.color}22` : "rgba(240,128,128,0.15)") : "rgba(255,255,255,0.04)",
+                color: active ? (item.color || "#f08080") : "#b05858",
+                boxShadow: active ? `0 0 12px ${item.color || "#f08080"}33, inset 0 0 0 1px ${item.color || "#f08080"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
                 backdropFilter: "blur(12px)", transition: "all 0.18s",
               }}>
                 {item.label}
@@ -656,13 +656,13 @@ export default function TexasMedMap() {
         {Object.entries(TIER).map(([t, cfg]) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: cfg.color, boxShadow: `0 0 8px ${cfg.color}88` }} />
-            <span style={{ fontSize: 10, color: "#7a3535", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
+            <span style={{ fontSize: 10, color: "#b05858", fontWeight: 600, letterSpacing: "0.04em" }}>T{t}</span>
           </div>
         ))}
         <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.07)", margin: "0 2px" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
           <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px dashed #6b7280", opacity: 0.5 }} />
-          <span style={{ fontSize: 10, color: "#7a3535", fontWeight: 600 }}>DO</span>
+          <span style={{ fontSize: 10, color: "#b05858", fontWeight: 600 }}>DO</span>
         </div>
       </div>
 
@@ -687,7 +687,7 @@ export default function TexasMedMap() {
           }} style={{
             width: 36, height: 36, borderRadius: 9, border: "1px solid rgba(255,255,255,0.1)",
             background: "rgba(6,13,26,0.85)", backdropFilter: "blur(12px)",
-            color: "#a05050", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
+            color: "#d07878", fontSize: label === "⌂" ? 16 : 20, fontWeight: 300,
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             lineHeight: 1,
           }}>
@@ -749,8 +749,8 @@ function HoverCard({ school, pos }) {
         <p style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8", margin: "0 0 3px", lineHeight: 1.35 }}>
           {school.name}
         </p>
-        <p style={{ fontSize: 11, color: "#7a3535", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
-          <MapPin size={10} strokeWidth={2.5} color="#7a3535" />
+        <p style={{ fontSize: 11, color: "#b05858", margin: 0, display: "flex", alignItems: "center", gap: 4 }}>
+          <MapPin size={10} strokeWidth={2.5} color="#b05858" />
           {school.location}
         </p>
       </div>
@@ -760,21 +760,21 @@ function HoverCard({ school, pos }) {
         {[
           { label: "MCAT",  value: school.admissions.mcat,      color: "#f59e0b" },
           { label: "GPA",   value: school.admissions.gpa,       color: "#10b981" },
-          { label: "Class", value: school.admissions.classSize,  color: "#e05555" },
+          { label: "Class", value: school.admissions.classSize,  color: "#f08080" },
         ].map((s, i) => (
           <div key={s.label} style={{
             textAlign: "center", padding: "10px 4px",
             borderRight: i < 2 ? "1px solid rgba(255,255,255,0.05)" : "none",
           }}>
             <div style={{ fontSize: 15, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
-            <div style={{ fontSize: 9, color: "#7a3535", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+            <div style={{ fontSize: 9, color: "#b05858", fontWeight: 600, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
           </div>
         ))}
       </div>
 
       <div style={{ padding: "7px 14px", fontSize: 10, borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {!school.isJAMP && (
-          <span style={{ color: "#e07070", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(200,60,60,0.12)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(200,60,60,0.3)" }}>
+          <span style={{ color: "#f4a0a0", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(240,128,128,0.12)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(240,128,128,0.3)" }}>
             Non-JAMP
           </span>
         )}
@@ -812,7 +812,7 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
           <button onClick={onClose} style={{
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", color: "#a05050", transition: "all 0.15s",
+            cursor: "pointer", color: "#d07878", transition: "all 0.15s",
           }}>
             <X size={15} strokeWidth={2.5} />
           </button>
@@ -832,8 +832,8 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
         <h2 style={{ fontSize: 20, fontWeight: 800, color: "#ddeeff", margin: "0 0 4px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
           {school.name}
         </h2>
-        <p style={{ fontSize: 12, color: "#7a3535", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
-          <MapPin size={11} strokeWidth={2} color="#7a3535" />
+        <p style={{ fontSize: 12, color: "#b05858", margin: "0 0 22px", display: "flex", alignItems: "center", gap: 5 }}>
+          <MapPin size={11} strokeWidth={2} color="#b05858" />
           {school.location}
         </p>
 
@@ -846,7 +846,7 @@ function SchoolPanel({ school, activeTab, setActiveTab, onClose }) {
                 flex: 1, padding: "9px 4px", background: "none", border: "none",
                 borderBottom: active ? `2px solid ${cfg.color}` : "2px solid transparent",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
-                color: active ? cfg.color : "#7a3535",
+                color: active ? cfg.color : "#b05858",
                 fontSize: 11, fontWeight: 600,
                 transition: "all 0.15s",
               }}>
@@ -886,7 +886,7 @@ function Section({ title, children }) {
 function InfoRow({ label, value, highlight }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-      <span style={{ fontSize: 12, color: "#7a3535", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "#b05858", fontWeight: 500, flexShrink: 0, marginRight: 12 }}>{label}</span>
       <span style={{ fontSize: 12, color: highlight || "#b0ccdf", fontWeight: 600, textAlign: "right", lineHeight: 1.4 }}>{value}</span>
     </div>
   );
@@ -910,10 +910,10 @@ function ContactCard({ label, value, href, icon }) {
       border: "1px solid rgba(255,255,255,0.06)",
       textDecoration: "none", marginBottom: 8, transition: "background 0.15s",
     }}>
-      <div style={{ color: "#e05555", flexShrink: 0 }}>{icon}</div>
+      <div style={{ color: "#f08080", flexShrink: 0 }}>{icon}</div>
       <div>
-        <div style={{ fontSize: 10, color: "#7a3535", fontWeight: 600, marginBottom: 1 }}>{label}</div>
-        <div style={{ fontSize: 12, color: "#c48080", fontWeight: 600 }}>{value}</div>
+        <div style={{ fontSize: 10, color: "#b05858", fontWeight: 600, marginBottom: 1 }}>{label}</div>
+        <div style={{ fontSize: 12, color: "#f2b0b0", fontWeight: 600 }}>{value}</div>
       </div>
     </a>
   );
@@ -961,7 +961,7 @@ function TabOverview({ school, cfg }) {
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8" }}>{school.jamp.name}</div>
-                <div style={{ fontSize: 10, color: "#7a3535" }}>JAMP Coordinator</div>
+                <div style={{ fontSize: 10, color: "#b05858" }}>JAMP Coordinator</div>
               </div>
             </div>
             <ContactCard label="Phone" value={school.jamp.phone} href={`tel:${school.jamp.phone}`} icon={<Phone size={14} />} />
@@ -975,13 +975,13 @@ function TabOverview({ school, cfg }) {
         </Section>
       ) : (
         <Section title="JAMP Status">
-          <div style={{ padding: "14px 16px", background: "rgba(200,60,60,0.07)", borderRadius: 12, border: "1px solid rgba(200,60,60,0.2)", marginBottom: 4 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#e07070", marginBottom: 6 }}>Not a JAMP Institution</div>
+          <div style={{ padding: "14px 16px", background: "rgba(240,128,128,0.07)", borderRadius: 12, border: "1px solid rgba(240,128,128,0.2)", marginBottom: 4 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#f4a0a0", marginBottom: 6 }}>Not a JAMP Institution</div>
             <p style={{ fontSize: 12, color: "#6070a0", lineHeight: 1.65, margin: 0 }}>
               This school is a private institution and does not participate in the Joint Admissions Medical Program. JAMP benefits (guaranteed admission, financial support, mentoring) are not available here.
             </p>
             <a href="https://texasjamp.org/about/participating-schools.html" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#e07070", textDecoration: "none" }}>
+              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#f4a0a0", textDecoration: "none" }}>
               View JAMP participating schools →
             </a>
           </div>
@@ -989,7 +989,7 @@ function TabOverview({ school, cfg }) {
       )}
 
       <Section title="Key Notes">
-        <p style={{ fontSize: 12, color: "#c48080", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
+        <p style={{ fontSize: 12, color: "#f2b0b0", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
       </Section>
 
       <TabSources links={[
@@ -1007,7 +1007,7 @@ function TabAdmissions({ school, cfg }) {
   const stats = [
     { label: "MCAT",        value: school.admissions.mcat,       color: "#f59e0b", sub: "Median" },
     { label: "GPA",         value: school.admissions.gpa,        color: "#10b981", sub: "Overall" },
-    { label: "Class Size",  value: school.admissions.classSize,  color: "#e05555", sub: "Students" },
+    { label: "Class Size",  value: school.admissions.classSize,  color: "#f08080", sub: "Students" },
     { label: "Accept Rate", value: school.admissions.acceptRate, color: "#a855f7", sub: "of applicants" },
   ];
 
@@ -1022,7 +1022,7 @@ function TabAdmissions({ school, cfg }) {
             }}>
               <div style={{ fontSize: 26, fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: 4 }}>{s.value}</div>
               <div style={{ fontSize: 11, fontWeight: 700, color: "#d4e8f8", marginBottom: 2 }}>{s.label}</div>
-              <div style={{ fontSize: 10, color: "#7a3535" }}>{s.sub}</div>
+              <div style={{ fontSize: 10, color: "#b05858" }}>{s.sub}</div>
             </div>
           ))}
         </div>
@@ -1056,7 +1056,7 @@ function TabAcademics({ school, cfg }) {
           {school.specialties.map((sp, i) => (
             <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", background: "rgba(255,255,255,0.02)", borderRadius: 9, border: "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: cfg.color, flexShrink: 0, marginTop: 4, boxShadow: `0 0 6px ${cfg.glow}` }} />
-              <span style={{ fontSize: 12, color: "#c48080", lineHeight: 1.5 }}>{sp}</span>
+              <span style={{ fontSize: 12, color: "#f2b0b0", lineHeight: 1.5 }}>{sp}</span>
             </div>
           ))}
         </div>
@@ -1076,8 +1076,8 @@ function TabResearch({ school, cfg }) {
     <>
       <Section title="NIH Funding">
         <div style={{ padding: "16px", borderRadius: 12, background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.18)", marginBottom: 4 }}>
-          <InfoRow label="National Rank" value={school.nih.rank} highlight="#e07070" />
-          <InfoRow label="Funding"       value={school.nih.funding} highlight="#e07070" />
+          <InfoRow label="National Rank" value={school.nih.rank} highlight="#f4a0a0" />
+          <InfoRow label="Funding"       value={school.nih.funding} highlight="#f4a0a0" />
         </div>
       </Section>
 
