@@ -16,7 +16,7 @@ const TIER = {
 const SCHOOLS = [
   {
     id: 1, name: "Baylor College of Medicine", shortName: "BCM",
-    degree: "MD", tier: 1, location: "Houston, TX",
+    degree: "MD", tier: 1, isJAMP: true, location: "Houston, TX",
     website: "https://www.bcm.edu/education/school-of-medicine",
     lat: 29.7104, lng: -95.3972, dx: -28, dy: -18,
     jamp: { name: "Alexandra Gonzales", phone: "713-798-4842", email: "alexandra.gonzales@bcm.edu" },
@@ -39,7 +39,7 @@ const SCHOOLS = [
   },
   {
     id: 2, name: "Dell Medical School (UT Austin)", shortName: "Dell Med",
-    degree: "MD", tier: 2, location: "Austin, TX",
+    degree: "MD", tier: 2, isJAMP: true, location: "Austin, TX",
     website: "https://dellmed.utexas.edu",
     lat: 30.2849, lng: -97.7341, dx: 0, dy: 0,
     jamp: { name: "Liliana Martinez", phone: "512-495-5821", email: "Liliana.martinez@austin.utexas.edu" },
@@ -62,7 +62,7 @@ const SCHOOLS = [
   },
   {
     id: 3, name: "Long School of Medicine (UT Health SA)", shortName: "Long SOM",
-    degree: "MD", tier: 2, location: "San Antonio, TX",
+    degree: "MD", tier: 2, isJAMP: true, location: "San Antonio, TX",
     website: "https://lsom.uthscsa.edu",
     lat: 29.5091, lng: -98.5672, dx: 0, dy: 0,
     jamp: { name: "Ana Isabel Leos", phone: "210-567-0304", email: "leosa3@uthscsa.edu" },
@@ -85,7 +85,7 @@ const SCHOOLS = [
   },
   {
     id: 4, name: "McGovern Medical School (UTHealth Houston)", shortName: "McGovern",
-    degree: "MD", tier: 2, location: "Houston, TX",
+    degree: "MD", tier: 2, isJAMP: true, location: "Houston, TX",
     website: "https://med.uth.edu",
     lat: 29.7198, lng: -95.4023, dx: 16, dy: 18,
     jamp: { name: "Yolanda Bell", phone: "713-500-5165", email: "yolanda.n.bell@uth.tmc.edu" },
@@ -108,7 +108,7 @@ const SCHOOLS = [
   },
   {
     id: 5, name: "Sam Houston State University COM", shortName: "SHSU-COM",
-    degree: "DO", tier: 4, location: "Conroe, TX",
+    degree: "DO", tier: 4, isJAMP: true, location: "Conroe, TX",
     website: "https://www.shsu.edu/colleges/com/",
     lat: 30.3118, lng: -95.4561, dx: -16, dy: -20,
     jamp: { name: "Christopher Truong", phone: "936-202-5208", email: "cat075@shsu.edu" },
@@ -131,7 +131,7 @@ const SCHOOLS = [
   },
   {
     id: 6, name: "Texas A&M Naresh K. Vashisht College of Medicine", shortName: "TAMU Med",
-    degree: "MD", tier: 3, location: "Bryan/College Station, TX",
+    degree: "MD", tier: 3, isJAMP: true, location: "Bryan/College Station, TX",
     website: "https://medicine.tamu.edu",
     lat: 30.6280, lng: -96.3344, dx: 0, dy: 0,
     jamp: { name: "Guillermo Canedo", phone: "979-436-0232", email: "gcanedo@tamu.edu" },
@@ -154,7 +154,7 @@ const SCHOOLS = [
   },
   {
     id: 7, name: "Paul L. Foster School of Medicine (TTUHSC El Paso)", shortName: "Foster SOM",
-    degree: "MD", tier: 3, location: "El Paso, TX",
+    degree: "MD", tier: 3, isJAMP: true, location: "El Paso, TX",
     website: "https://ttuhsc.edu/foster-medicine/",
     lat: 31.7619, lng: -106.4850, dx: 0, dy: 0,
     jamp: { name: "Yoli Betancourt", phone: "915-215-4407", email: "Yolanda.Betancourt@ttuhsc.edu" },
@@ -177,7 +177,7 @@ const SCHOOLS = [
   },
   {
     id: 8, name: "TTUHSC School of Medicine (Lubbock)", shortName: "TTUHSC",
-    degree: "MD", tier: 3, location: "Lubbock, TX",
+    degree: "MD", tier: 3, isJAMP: true, location: "Lubbock, TX",
     website: "https://ttuhsc.edu/medicine/",
     lat: 33.5779, lng: -101.8552, dx: 0, dy: 0,
     jamp: { name: "Louis Perez / Monica Galindo", phone: "806-743-2297", email: null },
@@ -200,7 +200,7 @@ const SCHOOLS = [
   },
   {
     id: 9, name: "Fertitta Family College of Medicine (UH)", shortName: "UH Med",
-    degree: "MD", tier: 4, location: "Houston, TX",
+    degree: "MD", tier: 4, isJAMP: true, location: "Houston, TX",
     website: "https://com.uh.edu",
     lat: 29.7199, lng: -95.3422, dx: 28, dy: -12,
     jamp: { name: "Ashley Schwartz", phone: "713-743-7047", email: "adschwar@central.uh.edu" },
@@ -223,7 +223,7 @@ const SCHOOLS = [
   },
   {
     id: 10, name: "Texas College of Osteopathic Medicine (TCOM)", shortName: "TCOM",
-    degree: "DO", tier: 3, location: "Fort Worth, TX",
+    degree: "DO", tier: 3, isJAMP: true, location: "Fort Worth, TX",
     website: "https://www.unthsc.edu/texas-college-of-osteopathic-medicine/",
     lat: 32.7431, lng: -97.3208, dx: 0, dy: 0,
     jamp: { name: "Lorena Marin", phone: "817-735-2475", email: "Lorena.Marin@unthsc.edu" },
@@ -246,7 +246,7 @@ const SCHOOLS = [
   },
   {
     id: 11, name: "Sealy School of Medicine (UTMB Galveston)", shortName: "Sealy/UTMB",
-    degree: "MD", tier: 2, location: "Galveston, TX",
+    degree: "MD", tier: 2, isJAMP: true, location: "Galveston, TX",
     website: "https://www.utmb.edu/som",
     lat: 29.2903, lng: -94.7977, dx: 0, dy: 0,
     jamp: { name: "LeTanya Neely", phone: "409-772-3763", email: "ldneely@utmb.edu" },
@@ -269,7 +269,7 @@ const SCHOOLS = [
   },
   {
     id: 12, name: "UT Rio Grande Valley School of Medicine", shortName: "UTRGV Med",
-    degree: "MD", tier: 4, location: "Edinburg, TX",
+    degree: "MD", tier: 4, isJAMP: true, location: "Edinburg, TX",
     website: "https://som.utrgv.edu",
     lat: 26.3017, lng: -98.1633, dx: 0, dy: 0,
     jamp: { name: "Itzely Moreno-Ortiz", phone: "956-296-1600", email: "itzely.ortiz01@utrgv.edu" },
@@ -292,7 +292,7 @@ const SCHOOLS = [
   },
   {
     id: 13, name: "UT Southwestern Medical Center", shortName: "UTSW",
-    degree: "MD", tier: 1, location: "Dallas, TX",
+    degree: "MD", tier: 1, isJAMP: true, location: "Dallas, TX",
     website: "https://www.utsouthwestern.edu/education/medical-school/",
     lat: 32.8127, lng: -96.8384, dx: 0, dy: 0,
     jamp: { name: "Jaclyn Young", phone: "214-648-4476", email: "jaclyn.young@utsouthwestern.edu" },
@@ -315,7 +315,7 @@ const SCHOOLS = [
   },
   {
     id: 14, name: "UT Tyler School of Medicine", shortName: "UT Tyler",
-    degree: "MD", tier: 4, location: "Tyler, TX",
+    degree: "MD", tier: 4, isJAMP: true, location: "Tyler, TX",
     website: "https://www.uttyler.edu/medicine/",
     lat: 32.3513, lng: -95.3011, dx: 0, dy: 14,
     jamp: { name: "Tonny Williams", phone: "903-877-7566", email: null },
@@ -336,6 +336,54 @@ const SCHOOLS = [
     notes: "Newest TX school (opened July 2023) · Smallest class in TX (40) · 95% TX residents · JAMP phased implementation: guaranteed admission begins 2026–2027 · ⚠️ JAMP coordinator email not confirmed — contact by phone",
     duals: ["MS in Biotechnology (concurrent)", "11 residency programs, 8 fellowships/internships"],
   },
+
+  // ── Non-JAMP Texas Medical Schools ──────────────────────────────────────────
+  {
+    id: 15, name: "Anne Burnett Marion School of Medicine at TCU", shortName: "TCU Burnett",
+    degree: "MD", tier: 3, isJAMP: false, location: "Fort Worth, TX",
+    website: "https://mdschool.tcu.edu/",
+    lat: 32.7457, lng: -97.3319, dx: 0, dy: 0,
+    jamp: null,
+    admissions: { mcat: "512", gpa: "3.82", classSize: "60", acceptRate: "~1–2%" },
+    grading: { preclinical: "Pass / Fail", clinical: "Longitudinal evaluation" },
+    curriculum: {
+      structure: "Longitudinal Integrated Clerkship (LIC) — patients from Week 1 across all 4 years; Empathetic Scholar® thesis required",
+      preclinical: "~15 months (Phase 1)",
+      step1: "End of Phase 2 (~2 years), after dedicated 6-week Step 1 prep course",
+    },
+    specialties: [
+      "Longitudinal Integrated Clerkship — real patients from Day 1",
+      "Medical innovation & simulation (Microsoft HoloLens / HoloAnatomy)",
+      "Empathetic Scholar® model — 4-year scholarly thesis required of all graduates",
+      "Fort Worth Medical Innovation District (Baylor Scott & White, Cook Children's, JPS)",
+    ],
+    nih: { rank: "Not ranked (full LCME accreditation June 2023)", funding: "Early-stage; primarily private philanthropy" },
+    notes: "Private · Founded 2019 · Named for $25M Burnett Foundation gift (2022) · Arnold Hall (95,000 sq ft) opened Sept 2024 · Only TX MD school using AMCAS (not TMDSAS) · ~27% TX residents · NOT a JAMP institution",
+    duals: ["MD/PhD (Biomedical Engineering, joint w/ UT Arlington — first cohort 2025)", "MD/MBA (TCU Neeley School of Business)", "MD/MPH (University of Mary Hardin-Baylor, online)"],
+  },
+  {
+    id: 16, name: "University of the Incarnate Word School of Osteopathic Medicine", shortName: "UIWSOM",
+    degree: "DO", tier: 4, isJAMP: false, location: "San Antonio, TX",
+    website: "https://osteopathic-medicine.uiw.edu/",
+    lat: 29.3400, lng: -98.4390, dx: 28, dy: 0,
+    jamp: null,
+    admissions: { mcat: "505", gpa: "3.60", classSize: "159", acceptRate: "4.4%" },
+    grading: { preclinical: "Pass / Fail (P / H / PR / F)", clinical: "Pass / Honors system" },
+    curriculum: {
+      structure: "Spiral integrated curriculum — 7 integrated units (Years 1–2); block core rotations (Years 3–4)",
+      preclinical: "2 years (OMS-1 & OMS-2)",
+      step1: "COMLEX Level 1 after OMS-2; COMLEX Level 2 during OMS-4 (USMLE optional)",
+    },
+    specialties: [
+      "Primary care & underserved community medicine (South Texas / border focus)",
+      "Osteopathic Manipulative Medicine (OMM) — ~200 hrs instruction",
+      "Medically Underserved Family Medicine — dedicated core clerkship (unique)",
+      "Catholic Social Teaching + osteopathic philosophy ethical framework",
+    ],
+    nih: { rank: "Not ranked (teaching-focused school)", funding: "Not publicly available" },
+    notes: "Private Catholic institution (UIW) · Founded 2015, classes began 2017 · Full COCA accreditation May 2021 · Campus at Brooks City Base — historic site of President Kennedy's last public speech · >30% underrepresented minorities · AACOMAS only · NOT a JAMP institution",
+    duals: ["DO/MPH (Master of Public Health, integrated across 4 years online)"],
+  },
 ];
 
 // ─── Map Projection ───────────────────────────────────────────────────────────
@@ -348,16 +396,19 @@ const project     = (lng, lat) => { const [x, y] = projection([lng, lat]); retur
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function TexasMedMap() {
-  const [selected,   setSelected]   = useState(null);
-  const [hovered,    setHovered]    = useState(null);
-  const [hoverPos,   setHoverPos]   = useState({ x: 0, y: 0 });
-  const [activeTab,  setActiveTab]  = useState("overview");
-  const [tierFilter, setTierFilter] = useState(0);
-  // viewBox: [x, y, w, h] — zoom by shrinking w/h around cursor point
+  const [selected,      setSelected]      = useState(null);
+  const [hovered,       setHovered]       = useState(null);
+  const [hoverPos,      setHoverPos]      = useState({ x: 0, y: 0 });
+  const [activeTab,     setActiveTab]     = useState("overview");
+  const [tierFilter,    setTierFilter]    = useState(0);
+  const [showJampOnly,  setShowJampOnly]  = useState(false);
   const [vb, setVb] = useState({ x: 0, y: 0, w: SVG_W, h: SVG_H });
   const mapSvgRef = useRef(null);
 
-  const visible = tierFilter === 0 ? SCHOOLS : SCHOOLS.filter(s => s.tier === tierFilter);
+  const visible = SCHOOLS.filter(s =>
+    (tierFilter === 0 || s.tier === tierFilter) &&
+    (!showJampOnly || s.isJAMP)
+  );
 
   function handleSelect(school) {
     setSelected(school);
@@ -555,25 +606,39 @@ export default function TexasMedMap() {
                 <span style={{ fontSize: 17, fontWeight: 300, color: "#3d6a91", letterSpacing: "-0.01em" }}>Medical Schools</span>
               </div>
               <div style={{ fontSize: 10, color: "#1e4d6a", letterSpacing: "0.12em", marginTop: 1 }}>
-                14 PARTICIPATING INSTITUTIONS · TEXAS
+                {showJampOnly ? "14 JAMP" : "16 TOTAL"} INSTITUTIONS · TEXAS
               </div>
             </div>
           </div>
         </div>
 
-        {/* Tier filter pills */}
+        {/* Filters */}
         <div style={{ pointerEvents: "auto", display: "flex", gap: 6, alignItems: "center" }}>
-          {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `Tier ${t}`, color: c.color }))].map(item => {
+          {/* JAMP-only toggle */}
+          <button onClick={() => setShowJampOnly(v => !v)} style={{
+            padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+            cursor: "pointer", border: "none", outline: "none",
+            background: showJampOnly ? "rgba(99,102,241,0.22)" : "rgba(255,255,255,0.04)",
+            color: showJampOnly ? "#818cf8" : "#2d5a7a",
+            boxShadow: showJampOnly ? "0 0 12px rgba(99,102,241,0.35), inset 0 0 0 1px rgba(99,102,241,0.5)" : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+            backdropFilter: "blur(12px)", transition: "all 0.18s", letterSpacing: "0.04em",
+          }}>
+            JAMP Only
+          </button>
+
+          <div style={{ width: 1, height: 18, background: "rgba(255,255,255,0.08)" }} />
+
+          {/* Tier filters */}
+          {[{ t: 0, label: "All" }, ...Object.entries(TIER).map(([t, c]) => ({ t: +t, label: `T${t}`, color: c.color }))].map(item => {
             const active = tierFilter === item.t;
             return (
               <button key={item.t} onClick={() => setTierFilter(active ? 0 : item.t)} style={{
-                padding: "5px 14px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+                padding: "5px 12px", borderRadius: 20, fontSize: 11, fontWeight: 600,
                 cursor: "pointer", border: "none", outline: "none",
                 background: active ? (item.color ? `${item.color}22` : "rgba(59,130,246,0.15)") : "rgba(255,255,255,0.04)",
                 color: active ? (item.color || "#3b82f6") : "#2d5a7a",
                 boxShadow: active ? `0 0 12px ${item.color || "#3b82f6"}33, inset 0 0 0 1px ${item.color || "#3b82f6"}44` : "inset 0 0 0 1px rgba(255,255,255,0.07)",
-                backdropFilter: "blur(12px)",
-                transition: "all 0.18s",
+                backdropFilter: "blur(12px)", transition: "all 0.18s",
               }}>
                 {item.label}
               </button>
@@ -707,8 +772,13 @@ function HoverCard({ school, pos }) {
         ))}
       </div>
 
-      <div style={{ padding: "7px 14px", fontSize: 10, color: "#1a4060", textAlign: "right", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-        Click to explore →
+      <div style={{ padding: "7px 14px", fontSize: 10, borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        {!school.isJAMP && (
+          <span style={{ color: "#818cf8", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", background: "rgba(99,102,241,0.12)", padding: "2px 7px", borderRadius: 4, border: "1px solid rgba(99,102,241,0.3)" }}>
+            Non-JAMP
+          </span>
+        )}
+        <span style={{ color: "#1a4060", marginLeft: "auto" }}>Click to explore →</span>
       </div>
     </div>
   );
@@ -882,34 +952,51 @@ function TabSources({ links }) {
 function TabOverview({ school, cfg }) {
   return (
     <>
-      <Section title="JAMP Coordinator">
-        <div style={{ padding: "14px", background: "rgba(255,255,255,0.02)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", marginBottom: 12 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${cfg.color}22`, border: `1px solid ${cfg.color}44`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <GraduationCap size={16} color={cfg.color} />
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8" }}>{school.jamp.name}</div>
-              <div style={{ fontSize: 10, color: "#2d5a7a" }}>JAMP Coordinator</div>
-            </div>
-          </div>
-          <ContactCard label="Phone" value={school.jamp.phone} href={`tel:${school.jamp.phone}`} icon={<Phone size={14} />} />
-          {school.jamp.email
-            ? <ContactCard label="Email" value={school.jamp.email} href={`mailto:${school.jamp.email}`} icon={<Mail size={14} />} />
-            : <div style={{ fontSize: 11, color: "#b45309", padding: "8px 14px", background: "rgba(180,83,9,0.08)", borderRadius: 8, border: "1px solid rgba(180,83,9,0.2)" }}>
-                ⚠️ Email unconfirmed — contact by phone
+      {school.isJAMP ? (
+        <Section title="JAMP Coordinator">
+          <div style={{ padding: "14px", background: "rgba(255,255,255,0.02)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", marginBottom: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+              <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${cfg.color}22`, border: `1px solid ${cfg.color}44`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <GraduationCap size={16} color={cfg.color} />
               </div>
-          }
-        </div>
-      </Section>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#d4e8f8" }}>{school.jamp.name}</div>
+                <div style={{ fontSize: 10, color: "#2d5a7a" }}>JAMP Coordinator</div>
+              </div>
+            </div>
+            <ContactCard label="Phone" value={school.jamp.phone} href={`tel:${school.jamp.phone}`} icon={<Phone size={14} />} />
+            {school.jamp.email
+              ? <ContactCard label="Email" value={school.jamp.email} href={`mailto:${school.jamp.email}`} icon={<Mail size={14} />} />
+              : <div style={{ fontSize: 11, color: "#b45309", padding: "8px 14px", background: "rgba(180,83,9,0.08)", borderRadius: 8, border: "1px solid rgba(180,83,9,0.2)" }}>
+                  ⚠️ Email unconfirmed — contact by phone
+                </div>
+            }
+          </div>
+        </Section>
+      ) : (
+        <Section title="JAMP Status">
+          <div style={{ padding: "14px 16px", background: "rgba(99,102,241,0.07)", borderRadius: 12, border: "1px solid rgba(99,102,241,0.2)", marginBottom: 4 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#818cf8", marginBottom: 6 }}>Not a JAMP Institution</div>
+            <p style={{ fontSize: 12, color: "#6070a0", lineHeight: 1.65, margin: 0 }}>
+              This school is a private institution and does not participate in the Joint Admissions Medical Program. JAMP benefits (guaranteed admission, financial support, mentoring) are not available here.
+            </p>
+            <a href="https://texasjamp.org/about/participating-schools.html" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-block", marginTop: 10, fontSize: 11, color: "#818cf8", textDecoration: "none" }}>
+              View JAMP participating schools →
+            </a>
+          </div>
+        </Section>
+      )}
 
       <Section title="Key Notes">
         <p style={{ fontSize: 12, color: "#7fb3d8", lineHeight: 1.7, margin: 0 }}>{school.notes}</p>
       </Section>
 
       <TabSources links={[
-        { label: "JAMP Participating Schools", url: "https://texasjamp.org/about/participating-schools.html" },
-        { label: "texasjamp.org — Program Overview", url: "https://texasjamp.org" },
+        ...(school.isJAMP ? [
+          { label: "JAMP Participating Schools", url: "https://texasjamp.org/about/participating-schools.html" },
+          { label: "texasjamp.org — Program Overview", url: "https://texasjamp.org" },
+        ] : []),
         { label: `${school.shortName} Official Website`, url: school.website },
       ]} />
     </>
